@@ -299,60 +299,105 @@
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
 
     <script>
-        // Initial Dataset of Exercises: Módulo de Ejercicios - Fundamentos de Python
+        // Initial Dataset of Exercises: Módulo de Ejercicios - Diccionarios, Tuplas y Funciones
         const defaultExercises = [
             {
-                id: "ex-fundamentos-1",
-                title: "1. Ficha de Registro de Usuario",
+                id: "ex-dict-1",
+                title: "1. Catálogo de Productos y Precios",
                 difficulty: "Fácil",
-                category: "Variables y Conversión de Tipos",
-                description: "Diseña un programa que solicite al usuario sus datos para registrarlo en un sistema.\n\nRequisitos:\n• Pide al usuario su nombre, edad (como número entero) y si es estudiante (respondiendo \"si\" o \"no\").\n• Imprime el tipo de dato nativo de la variable donde capturaste la edad antes y después de convertirla a entero con int().\n• Convierte la respuesta de si es estudiante a un valor booleano (True o False).\n• Muestra un resumen de la información en pantalla utilizando la función print().",
-                input: "Nombre: Carlos\nEdad ingresada: \"25\"\n¿Es estudiante?: \"si\"",
-                output: "Tipo de edad antes de convertir: <class 'str'>\nTipo de edad después de convertir: <class 'int'>\n\n--- FICHA DE REGISTRO ---\nNombre: Carlos\nEdad: 25 años\nEstudiante: True"
+                category: "Diccionarios y Funciones",
+                description: "Diseña un sistema que permita consultar el precio de un producto en un inventario predefinido utilizando un diccionario y una función de búsqueda.\n\nRequisitos:\n• Crea un diccionario productos = {\"manzana\": 1.5, \"pan\": 0.8, \"leche\": 1.2, \"huevos\": 2.5}.\n• Define una función consultar_precio(nombre_producto) que reciba el nombre del producto:\n  - Si el producto existe en el diccionario (usando el operador in), retorna su precio.\n  - Si no existe, retorna None.\n• En el programa principal, pide al usuario el nombre de un producto mediante input().\n• Llama a la función e imprime el precio formateado o un mensaje indicando que el producto no está registrado.",
+                input: "Ingrese el nombre del producto a consultar: leche",
+                output: "--- CONSULTA DE INVENTARIO ---\nBuscando producto: 'leche'\nPrecio de leche: $1.20 USD\n\n--- SEGUNDA CONSULTA ---\nBuscando producto: 'queso'\nResultado: El producto 'queso' no se encuentra registrado en el catálogo."
             },
             {
-                id: "ex-fundamentos-2",
-                title: "2. Calculadora de Descuento y Presupuesto",
+                id: "ex-dict-2",
+                title: "2. Gestor de Contactos con Tuplas",
                 difficulty: "Fácil",
-                category: "Operadores Aritméticos y Lógicos",
-                description: "Crea un script que ayude a una tienda a calcular el costo final de un producto y verificar si un cliente tiene presupuesto suficiente.\n\nRequisitos:\n• Solicita el nombre del producto, su precio base (float), el porcentaje de descuento a aplicar (int) y el dinero disponible del cliente (float).\n• Calcula el monto descontado y el precio final (PrecioFinal = PrecioBase - (PrecioBase * Descuento / 100)).\n• Evalúa mediante operadores comparadores y lógicos si el cliente puede pagar el producto (DineroDisponible >= PrecioFinal).\n• Muestra en pantalla el precio final a pagar y el resultado de la verificación (un valor True o False).",
-                input: "Producto: Laptop HP\nPrecio Base: 800.0\nDescuento (%): 15\nDinero Disponible: 700.0",
-                output: "--- RESUMEN DE COMPRA ---\nProducto: Laptop HP\nPrecio Base: $800.00\nDescuento Aplicado (15%): $120.00\nPrecio Final: $680.00\n¿Presupuesto suficiente?: True"
+                category: "Diccionarios y Tuplas",
+                description: "Implementa una agenda telefónica donde cada contacto guarda una tupla inmutable con su información de contacto (teléfono, email).\n\nRequisitos:\n• Define una función agregar_contacto(agenda, nombre, telefono, email) que añada al diccionario agenda una clave nombre con el valor de la tupla (telefono, email).\n• Define una función mostrar_agenda(agenda) que recorra el diccionario con un bucle for clave, valor in agenda.items() y muestre los datos desglosados.\n• En el programa principal, usa un bucle while para registrar 3 contactos ingresados por el usuario y luego muestra la agenda completa.",
+                input: "Contacto 1: Carlos, 555-0192, carlos@mail.com\nContacto 2: Ana, 555-0143, ana@mail.com\nContacto 3: Luis, 555-0188, luis@mail.com",
+                output: "--- AGENDA DE CONTACTOS ---\n• Nombre: Carlos\n  Teléfono: 555-0192 | Email: carlos@mail.com\n\n• Nombre: Ana\n  Teléfono: 555-0143 | Email: ana@mail.com\n\n• Nombre: Luis\n  Teléfono: 555-0188 | Email: luis@mail.com\n\nTotal de contactos registrados: 3"
             },
             {
-                id: "ex-fundamentos-3",
-                title: "3. Clasificador de Edades y Acceso",
+                id: "ex-dict-3",
+                title: "3. Calculadora Geométrica Multiuso",
                 difficulty: "Medio",
-                category: "Condicionales (if / elif / else)",
-                description: "Desarrolla un sistema que determine la categoría de edad de una persona y verifique si puede ingresar a una atracción de parque de diversiones.\n\nRequisitos:\n• Pide al usuario su edad y su estatura en centímetros.\n• Utiliza if / elif / else para clasificar al usuario según su edad:\n  - Menor de 12 años: \"Niño\"\n  - Entre 12 y 17 años: \"Adolescente\"\n  - Entre 18 y 64 años: \"Adulto\"\n  - 65 años o más: \"Adulto Mayor\"\n• Para subir a la atracción se requiere ser mayor de 12 años AND medir más de 140 cm. Evalúa esta condición utilizando operadores lógicos.\n• Imprime la categoría de edad asignada y un mensaje indicando si el usuario tiene permitido el acceso o no.",
-                input: "Edad: 15\nEstatura (cm): 155",
-                output: "Categoría de edad: Adolescente\nCondición de atracción: Mayor de 12 años (True) | Estatura mayor a 140 cm (True)\nResultado: Acceso PERMITIDO a la atracción."
+                category: "Funciones y Tuplas",
+                description: "Diseña un programa con funciones matemáticas que devuelvan más de un resultado a la vez empaquetados en una tupla y realiza el desempaquetado de variables.\n\nRequisitos:\n• Crea una función calcular_rectangulo(base, altura) que calcule el área (base * altura) y el perímetro (2 * (base + altura)). La función debe retornar ambos valores: return area, perimetro.\n• En el programa principal, solicita la base y la altura al usuario (float).\n• Llama a la función y desempaqueta los resultados en dos variables: area, perimetro = calcular_rectangulo(...).\n• Muestra en pantalla ambos resultados de forma clara.",
+                input: "Ingresa la base del rectángulo: 8.5\nIngresa la altura del rectángulo: 4.0",
+                output: "--- CÁLCULOS DEL RECTÁNGULO ---\nBase: 8.5 cm | Altura: 4.0 cm\n\nResultados obtenidos (Retorno de Tupla):\n• Área total: 34.00 cm²\n• Perímetro total: 25.00 cm"
             },
             {
-                id: "ex-fundamentos-4",
-                title: "4. Evaluador de Calificaciones y Asistencia",
+                id: "ex-dict-4",
+                title: "4. Registrador de Estudiantes y Calificaciones",
                 difficulty: "Medio",
-                category: "Expresiones Lógicas Complejas",
-                description: "Crea un programa que evalúe si un estudiante aprueba o reprueba un curso en base a su nota y su porcentaje de asistencia.\n\nRequisitos:\n• Solicita la nota final (de 0 a 100) y el porcentaje de asistencia (de 0 a 100).\n• Primero, verifica que las entradas sean válidas (nota entre 0 y 100 AND asistencia entre 0 y 100). Si no son válidas, muestra un mensaje de error.\n• Si los datos son válidos, determina el estado del estudiante:\n  - Aprobado con Excelencia: Nota >= 90 y asistencia >= 85%.\n  - Aprobado: Nota >= 60 y asistencia >= 75%.\n  - Reprobado por Asistencia: Nota >= 60, pero asistencia < 75%.\n  - Reprobado por Nota: Nota < 60.",
-                input: "Nota Final: 88\nPorcentaje Asistencia: 70",
-                output: "--- EVALUACIÓN ACADÉMICA ---\nNota: 88 / 100\nAsistencia: 70%\nEstado: Reprobado por Asistencia (requiere al menos 75% de asistencia)"
+                category: "Diccionarios y Listas",
+                description: "Administra el registro de notas de varios estudiantes guardando sus calificaciones en listas dentro de un diccionario para calcular sus promedios individuales.\n\nRequisitos:\n• Crea una función calcular_promedio(lista_notas) que reciba una lista de números y devuelva su promedio.\n• Crea un diccionario estudiantes donde la clave sea el nombre del estudiante y el valor sea una lista con 3 calificaciones.\n• Solicita datos para 3 estudiantes mediante un bucle for.\n• Al finalizar la carga, recorre el diccionario, invoca la función calcular_promedio para cada alumno y muestra si aprobó (promedio >= 60) o reprobó.",
+                input: "Estudiante 1: Maria -> Notas: [85, 90, 78]\nEstudiante 2: Pedro -> Notas: [50, 62, 45]\nEstudiante 3: Laura -> Notas: [95, 100, 92]",
+                output: "--- RESUMEN DE RENDIMIENTO ACADÉMICO ---\n• Estudiante: Maria\n  Notas: [85, 90, 78] | Promedio: 84.33 -> Estado: APROBADO\n\n• Estudiante: Pedro\n  Notas: [50, 62, 45] | Promedio: 52.33 -> Estado: REPROBADO\n\n• Estudiante: Laura\n  Notas: [95, 100, 92] | Promedio: 95.67 -> Estado: APROBADO"
             },
             {
-                id: "ex-fundamentos-5",
-                title: "5. Menú Interactivo de Operaciones y Categorización",
+                id: "ex-dict-5",
+                title: "5. Sistema de Inventario y Actualización de Stock",
                 difficulty: "Medio",
-                category: "Estructuras match / case",
-                description: "Diseña un centro de atención interactivo por consola que procese la solicitud del usuario según una opción del menú y valide parámetros numéricos.\n\nRequisitos:\n• Imprime un menú con las siguientes opciones:\n  1 - Verificar si un número es par o impar.\n  2 - Calcular el área de un triángulo.\n  3 - Evaluar el estado de una orden (código de estado).\n  4 - Salir.\n• Solicita al usuario que seleccione una opción.\n• Utiliza la estructura match / case para procesar la opción elegida:\n  - Caso 1: Pide un número entero, utiliza el operador módulo (%) para determinar si es par o impar e imprímelo.\n  - Caso 2: Pide la base y la altura (float), calcula el área (Base * Altura / 2) y muestra el resultado.\n  - Caso 3: Solicita un código de estado (un texto como \"pendiente\", \"enviado\", \"entregado\", \"cancelado\") y utiliza un match / case secundario o interno para mostrar un mensaje personalizado según la situación.\n  - Caso 4: Muestra un mensaje de despedida.\n  - Caso por defecto (case _): Muestra un mensaje de \"Opción no válida\".",
-                input: "Opción seleccionada: 3\nCódigo de Estado: \"enviado\"",
-                output: "--- SISTEMA DE TURNOS / COMANDOS ---\nOpción 3 seleccionada.\nEstado de la Orden: \"enviado\" -> Tu pedido está en camino con la empresa de mensajería."
+                category: "Diccionarios y Menú Interactivo",
+                description: "Crea un control de stock para una tienda manipulando diccionarios a través de funciones modularizadas de venta y reposición.\n\nRequisitos:\n• Define el diccionario inventario = {\"lapices\": 50, \"cuadernos\": 20, \"borradores\": 30}.\n• Crea las funciones:\n  - registrar_venta(inventario, producto, cantidad): Reduce la cantidad del stock si hay suficiente existencia; si no, muestra un error.\n  - reponer_stock(inventario, producto, cantidad): Incrementa la cantidad o añade el producto si es nuevo.\n• Implementa un menú interactivo (while + match / case) para que el usuario pueda vender, reponer o ver el inventario actualizado.",
+                input: "Opción 1: Vender 15 \"lapices\"\nOpción 2: Reponer 10 \"cuadernos\"\nOpción 1: Vender 30 \"cuadernos\" (Stock insuficiente)\nOpción 3: Mostrar Inventario\nOpción 4: Salir",
+                output: "--- TIENDA DE SUMINISTROS ---\nVenta exitosa: 15 lapices vendidos.\nStock repuesto: 10 cuadernos añadidos.\n[Error]: Stock insuficiente. Solo hay 30 cuadernos disponibles.\n\n--- INVENTARIO ACTUAL ---\n• lapices: 35 unidades\n• cuadernos: 30 unidades\n• borradores: 30 unidades"
+            },
+            {
+                id: "ex-dict-6",
+                title: "6. Contador de Frecuencia de Palabras",
+                difficulty: "Medio",
+                category: "Diccionarios y Texto",
+                description: "Escribe un analizador que reciba un párrafo y construya un diccionario de conteo indicando cuántas veces aparece cada palabra.\n\nRequisitos:\n• Crea una función analizar_frecuencia(texto):\n  - Convierte el texto a minúsculas y elimina signos de puntuación básicos.\n  - Divide el texto en una lista de palabras con .split().\n  - Crea un diccionario donde cada clave sea una palabra y el valor sea la cantidad de veces que se repite.\n  - Devuelve el diccionario generado.\n• En el código principal, pide una frase al usuario, invoca la función y muestra las palabras junto con su frecuencia.",
+                input: "Frase: \"Python es genial y Python es muy fácil de aprender con ejercicios de Python\"",
+                output: "--- ANÁLISIS DE FRECUENCIA DE PALABRAS ---\nTexto analizado: \"Python es genial y Python es muy fácil...\"\n\nConteo de frecuencias:\n• 'python': 3 veces\n• 'es': 2 veces\n• 'genial': 1 vez\n• 'y': 1 vez\n• 'muy': 1 vez\n• 'fácil': 1 vez\n• 'de': 2 veces\n• 'aprender': 1 vez\n• 'con': 1 vez\n• 'ejercicios': 1 vez"
+            },
+            {
+                id: "ex-dict-7",
+                title: "7. Conversor de Monedas con Tuplas de Tasas de Cambio",
+                difficulty: "Medio",
+                category: "Tuplas y Funciones",
+                description: "Convierte un monto en moneda local a varias divisas utilizando una tupla inmutable de tuplas como tabla de referencia constante.\n\nRequisitos:\n• Define una tupla global inmutable con las tasas de conversión:\n  TASAS = ((\"EUR\", 0.92), (\"GBP\", 0.78), (\"MXN\", 17.10), (\"VES\", 36.50))\n• Diseña una función convertir_divisa(monto, codigo_divisa) que busque el código en la tupla TASAS y realice la conversión (Monto * Tasa).\n• Si la divisa no está en la tupla, retorna un mensaje de error.\n• Solicita un monto al usuario y permite elegir la divisa de destino para calcular el resultado.",
+                input: "Monto a convertir: $100.0 USD\nCódigo de divisa destino: \"EUR\"",
+                output: "--- CONVERSOR DE DIVISAS ---\nTabla de tasas aplicable: EUR, GBP, MXN, VES\nMonto original: $100.00 USD\n\nConversión a EUR:\n• Tasa de cambio: 1 USD = 0.92 EUR\n• Resultado: 92.00 EUR"
+            },
+            {
+                id: "ex-dict-8",
+                title: "8. Validador y Formateador de Usuarios (**kwargs)",
+                difficulty: "Difícil",
+                category: "Funciones y Diccionarios (**kwargs)",
+                description: "Crea un módulo de registro que construya un perfil de usuario aceptando datos obligatorios y una cantidad variable de datos adicionales mediante **kwargs.\n\nRequisitos:\n• Define una función crear_perfil(nombre, apellido, edad, **datos_adicionales):\n  - La función debe construir un diccionario con las claves obligatorias nombre, apellido y edad.\n  - Si se pasan datos adicionales (como ciudad, profesion, github), deben integrarse al mismo diccionario mediante kwargs.\n  - Retorna el diccionario resultante.\n• Realiza varias llamadas a la función pasando diferentes cantidades de argumentos opcionales e imprime los diccionarios generados.",
+                input: "Llamada 1: crear_perfil(\"Ana\", \"Gomez\", 28, ciudad=\"Madrid\", profesion=\"Ingeniera\")\nLlamada 2: crear_perfil(\"Luis\", \"Perez\", 35, github=\"@luiscode\", pais=\"Chile\", rol=\"Dev\")",
+                output: "--- PERFILES GENERADOS ---\n\nPerfil 1:\n{\n  'nombre': 'Ana',\n  'apellido': 'Gomez',\n  'edad': 28,\n  'ciudad': 'Madrid',\n  'profesion': 'Ingeniera'\n}\n\nPerfil 2:\n{\n  'nombre': 'Luis',\n  'apellido': 'Perez',\n  'edad': 35,\n  'github': '@luiscode',\n  'pais': 'Chile',\n  'rol': 'Dev'\n}"
+            },
+            {
+                id: "ex-dict-9",
+                title: "9. Carrito de Compras Avanzado",
+                difficulty: "Difícil",
+                category: "Diccionarios y Listas Anidadas",
+                description: "Simula el proceso de compra de un e-commerce representando el carrito como una lista de diccionarios e implementando funciones modularizadas para procesar el desglose y cobro.\n\nRequisitos:\n• El carrito será una lista de diccionarios, donde cada elemento tiene la forma: {\"nombre\": \"Teclado\", \"precio\": 25.0, \"cantidad\": 2}.\n• Implementa las funciones:\n  - agregar_al_carrito(carrito, nombre, precio, cantidad)\n  - calcular_total(carrito): Retorna la suma total (Precio * Cantidad) de todos los productos.\n  - generar_recibo(carrito): Muestra en pantalla cada producto formateado en tabla/lista con subtotal y el monto total final.\n• En el flujo principal, permite al usuario añadir varios productos mediante un bucle while y genera el recibo final.",
+                input: "Agregar: Teclado ($25.0) x 2\nAgregar: Mouse ($15.0) x 1\nAgregar: Monitor ($180.0) x 1\nAcción: Generar Recibo",
+                output: "=============== RECIBO DE COMPRA ===============\n1. Teclado   | Cant: 2 | P.Unit: $25.00 | Subtotal: $50.00\n2. Mouse     | Cant: 1 | P.Unit: $15.00 | Subtotal: $15.00\n3. Monitor   | Cant: 1 | P.Unit: $180.00| Subtotal: $180.00\n------------------------------------------------\nTOTAL A PAGAR: $245.00 USD\n================================================"
+            },
+            {
+                id: "ex-dict-10",
+                title: "10. Sistema de Autenticación y Control de Roles",
+                difficulty: "Difícil",
+                category: "Proyecto Integrador",
+                description: "Desarrolla un sistema completo de gestión de usuarios con autenticación por clave y roles de acceso (Admin / Cliente) integrando diccionarios anidados, tuplas de permisos y control de flujo.\n\nRequisitos:\n• Estructura de datos inicial (Diccionario de diccionarios):\n  usuarios = {\n      \"admin\": {\"clave\": \"1234\", \"rol\": \"administrador\", \"permisos\": (\"crear\", \"eliminar\", \"ver\")},\n      \"juan\": {\"clave\": \"paso123\", \"rol\": \"cliente\", \"permisos\": (\"ver\",)}\n  }\n• Implementa las funciones:\n  - autenticar(usuarios, usuario, clave): Valida las credenciales. Retorna True o False.\n  - ejecutar_accion(usuario_info, accion): Verifica si la acción está dentro de la tupla de permisos. Usa match / case para procesar o denegar la acción.\n• Flujo principal con bucle while:\n  - Solicita usuario y contraseña (máximo 3 intentos).\n  - Una vez autenticado, despliega un menú de acciones según el rol.\n  - Evalúa los permisos antes de ejecutar cualquier acción.",
+                input: "Intento 1: Usuario: \"admin\", Clave: \"1234\" -> Autenticado\nSelección: Acción \"eliminar\"\nSelección: Acción \"crear\"",
+                output: "--- SISTEMA DE CONTROL DE ACCESO Y ROLES ---\n[OK] Credenciales válidas. Bienvenido 'admin' (Rol: administrador)\n\n--- MENÚ DE ACCIONES DISPONIBLES ---\nPermisos asignados: ('crear', 'eliminar', 'ver')\n\nEjecutando acción 'eliminar':\n[ÉXITO]: Elemento eliminado correctamente por el administrador.\n\nEjecutando acción 'crear':\n[ÉXITO]: Nuevo registro creado exitosamente."
             }
         ];
 
         // App State - Load default exercises or custom ones stored
-        let exercises = JSON.parse(localStorage.getItem('code_exercises_fundamentos')) || defaultExercises;
+        let exercises = JSON.parse(localStorage.getItem('code_exercises_dict_v1')) || defaultExercises;
         let currentIndex = 0;
-        let solvedMap = JSON.parse(localStorage.getItem('solved_exercises_fundamentos')) || {};
-        let favoritesMap = JSON.parse(localStorage.getItem('favorite_exercises_fundamentos')) || {};
+        let solvedMap = JSON.parse(localStorage.getItem('solved_exercises_dict')) || {};
+        let favoritesMap = JSON.parse(localStorage.getItem('favorite_exercises_dict')) || {};
 
         // DOM Elements
         const exTitle = document.getElementById('ex-title');
@@ -550,7 +595,7 @@
         toggleSolvedBtn.addEventListener('click', () => {
             const currentId = exercises[currentIndex].id;
             solvedMap[currentId] = !solvedMap[currentId];
-            localStorage.setItem('solved_exercises_fundamentos', JSON.stringify(solvedMap));
+            localStorage.setItem('solved_exercises_dict', JSON.stringify(solvedMap));
             updateSolvedUI(currentId);
             populateSelectOptions();
             showToast(solvedMap[currentId] ? 'Marcado como Resuelto' : 'Marcado como Sin Resolver');
@@ -559,7 +604,7 @@
         toggleFavBtn.addEventListener('click', () => {
             const currentId = exercises[currentIndex].id;
             favoritesMap[currentId] = !favoritesMap[currentId];
-            localStorage.setItem('favorite_exercises_fundamentos', JSON.stringify(favoritesMap));
+            localStorage.setItem('favorite_exercises_dict', JSON.stringify(favoritesMap));
             updateFavoriteUI(currentId);
             showToast(favoritesMap[currentId] ? 'Agregado a Favoritos' : 'Eliminado de Favoritos');
         });
@@ -662,7 +707,7 @@
             };
 
             exercises.push(newEx);
-            localStorage.setItem('code_exercises_fundamentos', JSON.stringify(exercises));
+            localStorage.setItem('code_exercises_dict_v1', JSON.stringify(exercises));
             
             addModal.classList.add('hidden');
             addForm.reset();

@@ -1,745 +1,750 @@
 <!DOCTYPE html>
-<html lang="es" class="dark scroll-smooth h-full">
+<html lang="es" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plus58 | Modo TV - Programación Básica con Python</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              300: '#6ee7b7',
-              400: '#34d399',
-              500: '#10b981',
-              600: '#059669',
-              accent: '#00f59b'
-            },
-            darkbg: '#070a12',
-            cardbg: '#0f172a',
-            codebg: '#090d16'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['Fira Code', 'JetBrains Mono', 'Consolas', 'monospace']
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Ejercicios de Programación</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-  
-  <!-- Fonts & Lucide Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Prism.js for Syntax Highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-
-  <!-- Pyodide Python Runner -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
-
-  <style>
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #070a12;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
-    }
+    </script>
     
-    .tv-glass {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .glow-accent {
-      box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.35);
-    }
-
-    .tv-code-font {
-      font-size: 1.35rem !important;
-      line-height: 1.8 !important;
-    }
-
-    pre[class*="language-"] {
-      margin: 0 !important;
-      border-radius: 1rem !important;
-      background: #090d16 !important;
-      padding: 1.75rem !important;
-    }
-  </style>
+    <style>
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
 </head>
-<body class="bg-darkbg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-brand-500 selection:text-slate-950 overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col font-sans transition-colors duration-200">
 
-  <!-- Header TV Optimized -->
-  <header class="bg-slate-950/90 border-b border-slate-800/80 px-6 py-4 sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-4">
-      
-      <!-- Logo & Class Info -->
-      <div class="flex items-center gap-4">
-        <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-brand-400 to-emerald-600 flex items-center justify-center font-black text-slate-950 text-2xl shadow-xl glow-accent">
-          +58
+    <!-- Top Header Navigation -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-sky-500 to-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+                    <i class="fa-solid font-bold fa-code text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-slate-900 dark:text-white">CodeExercise Hub</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Practica y resuelve problemas de código</p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button id="grid-view-btn" title="Ver lista de ejercicios" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-700/60 rounded-lg transition-colors">
+                    <i class="fa-solid fa-th-large"></i>
+                    <span class="hidden md:inline">Ver Todos</span>
+                </button>
+
+                <button id="add-custom-btn" class="flex items-center gap-2 px-3 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-600 text-white rounded-lg shadow-sm hover:shadow transition-all">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="hidden sm:inline">Nuevo Ejercicio</span>
+                </button>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" title="Cambiar Tema" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                    <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-lg hidden"></i>
+                    <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-lg"></i>
+                </button>
+            </div>
         </div>
-        <div>
-          <div class="flex items-center gap-3">
-            <h1 class="font-black text-2xl md:text-3xl tracking-tight text-white">Plus58</h1>
-            <span class="px-3 py-1 text-xs md:text-sm font-bold rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">
-              Modo TV / Aula
-            </span>
-          </div>
-          <p class="text-slate-400 text-xs md:text-sm font-medium">Programación Básica con Python</p>
-        </div>
-      </div>
+    </header>
 
-      <!-- Center Quick Number Selector -->
-      <div class="flex items-center gap-1.5 md:gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800" id="quick-num-bar">
-        <!-- Generated by JS -->
-      </div>
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
 
-      <!-- Controls Right: Fullscreen & Shortcuts Help -->
-      <div class="flex items-center gap-3">
-        <button onclick="toggleFullscreen()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl border border-slate-800 font-bold text-sm flex items-center gap-2 transition-all">
-          <i data-lucide="maximize" class="w-4 h-4 text-brand-400"></i>
-          <span class="hidden sm:inline">Pantalla Completa (F)</span>
-        </button>
-      </div>
+        <!-- Exercise Controls Top Bar -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/80 shadow-sm flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Navigation buttons -->
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-sm font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span class="hidden sm:inline">Anterior</span>
+                </button>
+                <button id="next-btn" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-sm font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span class="hidden sm:inline">Siguiente</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
 
-    </div>
-  </header>
+            <!-- Current Indicator & Jump Menu -->
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Ejercicio</span>
+                <select id="exercise-select" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-xl px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:outline-none cursor-pointer max-w-[200px] sm:max-w-xs truncate">
+                    <!-- Dynamic options injected here -->
+                </select>
+                <span id="counter-badge" class="text-xs px-2.5 py-1 bg-slate-100 dark:bg-slate-700 font-mono rounded-full text-slate-600 dark:text-slate-300 font-medium">
+                    1 / 1
+                </span>
+            </div>
 
-  <!-- Main Workspace optimized for big TV screens -->
-  <main class="flex-1 max-w-[1700px] w-full mx-auto px-4 md:px-8 py-6 flex flex-col justify-between">
-    
-    <!-- Top Action Bar: Level Badge & VIEW TOGGLE BUTTON -->
-    <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-6">
-      
-      <!-- Current Exercise Badge & Title -->
-      <div>
-        <div class="flex items-center gap-3 mb-1">
-          <span id="ex-level-badge" class="px-3 py-1 rounded-lg text-xs md:text-sm font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-            Nivel 1: Fáciles
-          </span>
-          <span id="ex-topic-badge" class="text-slate-400 text-sm md:text-base font-semibold">
-            Lógica Básica
-          </span>
-        </div>
-        <h2 id="ex-title" class="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
-          1. El Descuento por Cantidad
-        </h2>
-      </div>
-
-      <!-- MAIN MODE TOGGLE SWITCH (Enunciado vs Código) -->
-      <div class="bg-slate-900/90 p-2 rounded-2xl border border-slate-800/80 flex items-center gap-2 self-start lg:self-auto shadow-2xl">
-        <button 
-          id="btn-mode-enunciado" 
-          onclick="setMode('enunciado')"
-          class="flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 bg-brand-500 text-slate-950 shadow-lg glow-accent"
-        >
-          <i data-lucide="file-text" class="w-6 h-6"></i>
-          <span>📄 Ver Enunciado</span>
-        </button>
-
-        <button 
-          id="btn-mode-codigo" 
-          onclick="setMode('codigo')"
-          class="flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 text-slate-400 hover:text-white hover:bg-slate-800/60"
-        >
-          <i data-lucide="code-2" class="w-6 h-6"></i>
-          <span>💻 Ver Código de Resolución</span>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- MAIN DISPLAY CARD (Toggles between Enunciado and Código) -->
-    <div class="tv-glass rounded-3xl p-6 md:p-10 border border-slate-800 shadow-2xl min-h-[520px] flex flex-col justify-between relative overflow-hidden">
-      
-      <!-- VIEW 1: ENUNCIADO (TEXTO GRANDE) -->
-      <div id="view-enunciado" class="space-y-8 animate-in fade-in duration-200">
-        <!-- Description Box -->
-        <div class="bg-slate-950/80 p-6 md:p-8 rounded-2xl border border-slate-800/90">
-          <h3 class="text-sm md:text-base font-extrabold uppercase tracking-widest text-brand-400 mb-4 flex items-center gap-2">
-            <i data-lucide="book-open" class="w-5 h-5"></i>
-            Instrucciones del Ejercicio
-          </h3>
-          <p id="ex-description" class="text-slate-100 text-2xl md:text-3xl lg:text-4xl leading-relaxed font-semibold">
-            <!-- Rendered by JS -->
-          </p>
+            <!-- Quick Status Actions -->
+            <div class="flex items-center gap-2">
+                <button id="toggle-favorite-btn" title="Guardar como favorito" class="p-2 text-slate-400 hover:text-amber-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <i class="fa-regular fa-star text-lg"></i>
+                </button>
+                <button id="toggle-solved-btn" title="Marcar como resuelto" class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all">
+                    <i class="fa-regular fa-circle-check text-base text-slate-400"></i>
+                    <span id="solved-text" class="hidden md:inline">Sin Resolver</span>
+                </button>
+            </div>
         </div>
 
-        <!-- Sample Input / Output Grid for TV -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-slate-950/90 border border-slate-800/80 p-6 rounded-2xl">
-            <span class="text-slate-400 font-bold uppercase tracking-wider text-xs md:text-sm block mb-2 flex items-center gap-2">
-              <i data-lucide="arrow-down-right" class="w-4 h-4 text-emerald-400"></i> Entrada de Ejemplo
-            </span>
-            <pre id="ex-sample-input" class="text-xl md:text-2xl font-mono text-emerald-300 font-bold whitespace-pre-wrap"></pre>
-          </div>
+        <!-- Exercise Main Display Card -->
+        <div id="exercise-card" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-md overflow-hidden flex flex-col transition-all">
+            
+            <!-- Card Header Header -->
+            <div class="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-700/60 bg-gradient-to-r from-slate-50/50 to-white dark:from-slate-800 dark:to-slate-800/50">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2 flex-wrap" id="tags-container">
+                        <!-- Badges injected dynamically -->
+                    </div>
+                    <span id="difficulty-badge" class="px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider">
+                        Fácil
+                    </span>
+                </div>
 
-          <div class="bg-slate-950/90 border border-slate-800/80 p-6 rounded-2xl">
-            <span class="text-slate-400 font-bold uppercase tracking-wider text-xs md:text-sm block mb-2 flex items-center gap-2">
-              <i data-lucide="terminal" class="w-4 h-4 text-brand-400"></i> Salida Esperada
-            </span>
-            <pre id="ex-sample-output" class="text-xl md:text-2xl font-mono text-brand-300 font-bold whitespace-pre-wrap"></pre>
-          </div>
+                <h2 id="ex-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    Cargando título...
+                </h2>
+            </div>
+
+            <!-- Statement Section -->
+            <div class="p-6 sm:p-8 space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold text-sky-600 dark:text-sky-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-align-left"></i>
+                        Enunciado del Problema
+                    </h3>
+                    <div id="ex-description" class="text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed whitespace-pre-line space-y-2">
+                        <!-- Description content -->
+                    </div>
+                </div>
+
+                <!-- Input and Expected Output Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    
+                    <!-- Example Input Box -->
+                    <div class="flex flex-col bg-slate-900 text-slate-100 rounded-xl overflow-hidden shadow-inner border border-slate-800">
+                        <div class="px-4 py-2.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-right-to-bracket text-sky-400"></i>
+                                Entrada de Ejemplo
+                            </span>
+                            <button id="copy-input-btn" class="px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded transition-colors flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copiar</span>
+                            </button>
+                        </div>
+                        <div class="p-4 flex-1 overflow-x-auto">
+                            <pre><code id="ex-input" class="code-font text-sm text-sky-300 whitespace-pre-wrap"></code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Expected Output Box -->
+                    <div class="flex flex-col bg-slate-900 text-slate-100 rounded-xl overflow-hidden shadow-inner border border-slate-800">
+                        <div class="px-4 py-2.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-right-from-bracket text-emerald-400"></i>
+                                Salida Esperada
+                            </span>
+                            <button id="copy-output-btn" class="px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded transition-colors flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copiar</span>
+                            </button>
+                        </div>
+                        <div class="p-4 flex-1 overflow-x-auto">
+                            <pre><code id="ex-output" class="code-font text-sm text-emerald-300 whitespace-pre-wrap"></code></pre>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-      </div>
 
-      <!-- VIEW 2: CÓDIGO DE RESOLUCIÓN (LETRA GRANDE FUENTE MONO) -->
-      <div id="view-codigo" class="hidden space-y-6 animate-in fade-in duration-200">
-        <div class="flex items-center justify-between">
-          <h3 class="text-sm md:text-base font-extrabold uppercase tracking-widest text-brand-400 flex items-center gap-2">
-            <i data-lucide="code" class="w-5 h-5"></i>
-            Solución en Python
-          </h3>
-
-          <button onclick="copyCurrentCode()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-sm flex items-center gap-2 border border-slate-700 transition-colors">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-            <span>Copiar Código</span>
-          </button>
+        <!-- Shortcut info -->
+        <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 px-2">
+            <span>Usa las teclas <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-slate-700 dark:text-slate-300">←</kbd> y <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-slate-700 dark:text-slate-300">→</kbd> del teclado para navegar entre ejercicios.</span>
         </div>
 
-        <!-- Code Block with large TV font -->
-        <div class="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
-          <pre class="language-python tv-code-font"><code id="ex-code-block" class="language-python"># Código de solución</code></pre>
+    </main>
+
+    <!-- All Exercises List Modal -->
+    <div id="list-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-sky-500"></i>
+                    Lista Completa de Ejercicios
+                </h3>
+                <button id="close-list-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 border-b border-slate-100 dark:border-slate-700/50">
+                <input id="search-exercise-input" type="text" placeholder="Buscar ejercicio por nombre o palabra clave..." class="w-full bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm rounded-xl px-4 py-2.5 border-none focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            </div>
+            <div id="exercise-grid-list" class="p-4 overflow-y-auto space-y-2 flex-1">
+                <!-- Injected dynamically -->
+            </div>
         </div>
-
-        <!-- Explanation Banner -->
-        <div class="bg-slate-900/90 border border-amber-500/30 p-6 rounded-2xl flex items-start gap-4">
-          <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20 shrink-0">
-            <i data-lucide="lightbulb" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <h4 class="text-amber-400 font-black text-lg md:text-xl">Concepto Clave</h4>
-            <p id="ex-explanation" class="text-slate-200 text-lg md:text-xl font-medium mt-1">
-              Explicación breve del concepto
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- INTERACTIVE TERMINAL SECTION (Expandable/Collapsible) -->
-      <div class="mt-8 border-t border-slate-800/80 pt-6">
-        <div class="flex items-center justify-between mb-3">
-          <button onclick="toggleTerminalVisibility()" class="text-sm md:text-base font-extrabold text-slate-300 hover:text-brand-400 flex items-center gap-2 transition-colors">
-            <i data-lucide="terminal" class="w-5 h-5 text-brand-400"></i>
-            <span>Probar Ejecución en Vivo (Pyodide WASM)</span>
-            <i id="term-chevron" data-lucide="chevron-down" class="w-4 h-4"></i>
-          </button>
-
-          <div class="flex items-center gap-3">
-            <button onclick="runPythonCode()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-sm md:text-base rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20">
-              <i data-lucide="play" class="w-5 h-5 fill-slate-950"></i>
-              <span>Ejecutar Código</span>
-            </button>
-            <button onclick="clearTerminal()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl border border-slate-800 text-sm font-bold">
-              Limpiar
-            </button>
-          </div>
-        </div>
-
-        <div id="terminal-container" class="hidden">
-          <div id="terminal-output" class="font-mono text-lg md:text-xl bg-codebg border border-slate-800 p-5 rounded-2xl min-h-[140px] max-h-[260px] overflow-y-auto text-emerald-400 whitespace-pre-wrap leading-relaxed">
-Haz clic en "Ejecutar Código" para simular la consola interactiva...
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- BOTTOM NAVIGATION BAR FOR TV PRESENTER -->
-    <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
-      
-      <!-- Prev Button -->
-      <button 
-        id="btn-prev" 
-        onclick="navigateExercise(-1)" 
-        class="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-800 font-extrabold text-lg flex items-center justify-center gap-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-      >
-        <i data-lucide="arrow-left" class="w-6 h-6"></i>
-        <span>Ejercicio Anterior</span>
-      </button>
-
-      <!-- Center Indicator & Hotkey Hint -->
-      <div class="text-center font-mono text-slate-400 text-sm md:text-base font-bold">
-        <span id="nav-counter" class="text-brand-400 text-xl font-extrabold">01 / 10</span>
-        <span class="hidden lg:inline text-slate-500 ml-3">| Teclas: ⬅️ ➡️ para cambiar, [ESPACIO] para alternar código</span>
-      </div>
-
-      <!-- Next Button -->
-      <button 
-        id="btn-next" 
-        onclick="navigateExercise(1)" 
-        class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-500 to-emerald-600 hover:from-brand-400 hover:to-emerald-500 text-slate-950 rounded-xl font-black text-lg flex items-center justify-center gap-3 transition-all shadow-lg glow-accent disabled:opacity-30 disabled:cursor-not-allowed"
-      >
-        <span>Siguiente Ejercicio</span>
-        <i data-lucide="arrow-right" class="w-6 h-6"></i>
-      </button>
-
     </div>
 
-  </main>
+    <!-- Add Custom Exercise Modal -->
+    <div id="add-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Agregar Nuevo Ejercicio</h3>
+                <button id="close-add-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="add-exercise-form" class="space-y-4 text-xs sm:text-sm">
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Título del Ejercicio</label>
+                    <input type="text" id="new-title" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                </div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-8 right-8 z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3 bg-slate-900 text-slate-100 border border-brand-500/40 px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-lg">
-    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-400"></i>
-    <span id="toast-message" class="text-base font-bold">Notificación</span>
-  </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Dificultad</label>
+                        <select id="new-difficulty" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                            <option value="Fácil">Fácil</option>
+                            <option value="Medio">Medio</option>
+                            <option value="Difícil">Difícil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Categoría</label>
+                        <input type="text" id="new-category" placeholder="Ej: Arreglos, Strings" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
 
-  <!-- JavaScript Logic -->
-  <script>
-    const exercisesData = [
-      {
-        id: 1,
-        level: "Nivel 1: Dominando los Textos",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "El Limpiador de Nombres",
-        topic: "Métodos strip() y title()",
-        description: "Pide al usuario que ingrese su nombre completo. A menudo los usuarios agregan espacios por accidente o escriben todo en minúsculas.\n\nUtiliza los métodos strip() y title() en una sola línea para limpiar el texto y mostrar el nombre con la primera letra de cada palabra en mayúscula.",
-        sampleInput: "   juan carlos perez   ",
-        sampleOutput: "Nombre limpio: Juan Carlos Perez",
-        pythonCode: `# Ejercicio 1: El Limpiador de Nombres
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Enunciado</label>
+                    <textarea id="new-description" rows="3" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
 
-nombre_raw = input("Ingresa tu nombre completo: ")
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Entrada de Ejemplo</label>
+                    <textarea id="new-input" rows="2" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 code-font focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
 
-# Limpiamos espacios laterales y aplicamos formato de título en una sola línea
-nombre_limpio = nombre_raw.strip().title()
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Salida Esperada</label>
+                    <textarea id="new-output" rows="2" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 code-font focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
 
-print(f"Nombre limpio: {nombre_limpio}")`,
-        explanation: "El encadenamiento de métodos `strip().title()` elimina primero los espacios en blanco sobrantes a los lados y luego convierte la inicial de cada palabra a mayúscula."
-      },
-      {
-        id: 2,
-        level: "Nivel 1: Dominando los Textos",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "El Contador de Letras",
-        topic: "Métodos lower() y count()",
-        description: "Pide al usuario que ingrese una frase y luego pídele que ingrese una letra que quiera buscar.\n\nUtiliza el método lower() en ambas entradas para no tener problemas con mayúsculas y minúsculas, y luego usa count() para imprimir cuántas veces aparece esa letra en la frase.",
-        sampleInput: "Frase: 'Programar en Python es Genial'\nLetra: 'a'",
-        sampleOutput: "La letra 'a' aparece 3 veces en la frase.",
-        pythonCode: `# Ejercicio 2: El Contador de Letras
+                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2.5 rounded-lg transition-colors shadow">
+                    Guardar Ejercicio
+                </button>
+            </form>
+        </div>
+    </div>
 
-frase = input("Ingresa una frase: ").lower()
-letra = input("Ingresa la letra a buscar: ").lower()
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
 
-# Contamos la cantidad de repeticiones de la letra
-cantidad = frase.count(letra)
+    <script>
+        // Initial Dataset of Exercises: Módulo de Bucles (while / for) + Fundamentos
+        const defaultExercises = [
+            {
+                id: "ex-bucles-1",
+                title: "1. Contador y Clasificador de Números",
+                difficulty: "Fácil",
+                category: "Bucles (for) e Condicionales",
+                description: "Escribe un programa que analice los números del 1 al 20.\n\nRequisitos:\n• Utiliza un bucle for con range(1, 21).\n• Para cada número, determina si es par o impar utilizando el operador módulo %.\n• Muestra en pantalla el número seguido de su clasificación (ej. '4 es Par' o '7 es Impar').\n• Al finalizar el bucle, imprime cuántos números pares e impares se encontraron en total.",
+                input: "(Sin entrada del usuario - Ejecución automática del 1 al 20)",
+                output: "1 es Impar\n2 es Par\n3 es Impar\n4 es Par\n...\n20 es Par\n\nTotal de números pares: 10\nTotal de números impares: 10"
+            },
+            {
+                id: "ex-bucles-2",
+                title: "2. Validación de Entrada de Usuario",
+                difficulty: "Fácil",
+                category: "Bucles (while) y Control de Flujo",
+                description: "Diseña un sistema de inicio de sesión simplificado que no permita continuar hasta que el usuario ingrese una clave válida.\n\nRequisitos:\n• Define una variable con la contraseña correcta (por ejemplo, 'python123').\n• Usa un bucle while para pedir continuamente al usuario que ingrese la clave mediante input().\n• Si la clave es incorrecta, muestra un mensaje de error y vuelve a solicitarla.\n• Agrega un contador de intentos: si el usuario falla 3 veces, el bucle debe terminar indicando 'Acceso bloqueado'.\n• Si ingresa la clave correcta antes de agotar los intentos, muestra 'Acceso concedido'.",
+                input: "Intento 1: 1234\nIntento 2: admin\nIntento 3: python123",
+                output: "Clave incorrecta. Te quedan 2 intentos.\nClave incorrecta. Te quedan 1 intentos.\nAcceso concedido"
+            },
+            {
+                id: "ex-bucles-3",
+                title: "3. Generador de Tablas de Multiplicar Interactivas",
+                difficulty: "Fácil",
+                category: "Bucles (while + for) e Input",
+                description: "Solicita un número al usuario e imprime su tabla de multiplicar del 1 al 10.\n\nRequisitos:\n• Captura un número entero mediante input(). Si el usuario ingresa un valor menor o igual a 0, solicita el número nuevamente usando un bucle while.\n• Una vez obtenido un número válido, utiliza un bucle for para iterar del 1 al 10.\n• En cada iteración, calcula la multiplicación e imprime el resultado con formato claro (ej. 5 x 1 = 5).",
+                input: "Primer valor ingresado: -2\nSegundo valor ingresado: 5",
+                output: "Error: Debe ingresar un número positivo mayor a 0.\n\nTabla de multiplicar del 5:\n5 x 1 = 5\n5 x 2 = 10\n5 x 3 = 15\n5 x 4 = 20\n5 x 5 = 25\n5 x 6 = 30\n5 x 7 = 35\n5 x 8 = 40\n5 x 9 = 45\n5 x 10 = 50"
+            },
+            {
+                id: "ex-bucles-4",
+                title: "4. Acumulador de Gastos con Bucle Sentinela",
+                difficulty: "Medio",
+                category: "Bucles (while) y Acumuladores",
+                description: "Crea un control de presupuesto personal donde el usuario pueda registrar gastos uno a uno hasta que decida finalizar.\n\nRequisitos:\n• Inicializa una variable total_gastos = 0.0.\n• Dentro de un bucle while, pide al usuario que ingrese el monto de un gasto (tipo float) o que escriba -1 para terminar.\n• Si el monto ingresado es mayor a 0, súmalo al acumulador. Si es menor a 0 y diferente de -1, muestra un aviso de gasto no válido.\n• Cuando el usuario ingrese -1, finaliza el bucle y muestra el total acumulado y el número de gastos registrados.",
+                input: "15.50\n-5.00\n42.00\n10.25\n-1",
+                output: "Gasto de $15.50 registrado.\nAviso: El monto ingresado no es válido.\nGasto de $42.00 registrado.\nGasto de $10.25 registrado.\n\n--- RESUMEN DE COMPRAS ---\nTotal acumulado: $67.75\nNúmero de gastos registrados: 3"
+            },
+            {
+                id: "ex-bucles-5",
+                title: "5. Menú Interactivo Persistente con match / case y while",
+                difficulty: "Medio",
+                category: "Estructuras de Control (match/case)",
+                description: "Modifica la estructura típica de un menú interactivo para que se ejecute continuamente hasta que el usuario decida salir explícitamente.\n\nRequisitos:\n• Despliega un menú con 3 opciones:\n  1 - Convertir grados Celsius a Fahrenheit.\n  2 - Convertir metros a kilómetros.\n  3 - Salir.\n• Mantiene el menú en un bucle while True hasta que se seleccione la opción 3.\n• Utiliza match / case para procesar la opción elegida:\n  - Caso 1: Solicita los °C (float), calcula F = (C * 9/5) + 32 e imprime el resultado.\n  - Caso 2: Solicita los metros (float), calcula KM = Metros / 1000 e imprime.\n  - Caso 3: Imprime un mensaje de despedida y rompe el bucle con break.\n  - Default (case _): Indica que la opción es inválida.",
+                input: "Selección: 1 -> Celsius: 25\nSelección: 2 -> Metros: 1500\nSelección: 9\nSelección: 3",
+                output: "25.0 °C equivalen a 77.0 °F\n1500.0 metros equivalen a 1.5 km\nOpción inválida. Intente de nuevo.\n¡Gracias por utilizar el sistema! Saliendo..."
+            },
+            {
+                id: "ex-bucles-6",
+                title: "6. Simulador de Ahorro Meta con Intereses",
+                difficulty: "Medio",
+                category: "Bucles (while) y Simulación",
+                description: "Diseña una herramienta para calcular cuántos meses tardará una persona en alcanzar una meta de ahorro recibiendo un rendimiento mensual.\n\nRequisitos:\n• Solicita al usuario: monto de ahorro inicial (float), aporte mensual fijo (float), tasa de interés mensual en porcentaje (float) y la meta de ahorro final (float).\n• Utiliza un bucle while para simular el paso de los meses.\n• En cada mes (iteración):\n  1. Suma el aporte mensual al saldo.\n  2. Calcula y suma el interés generado sobre el saldo actual (Saldo = Saldo + (Saldo * Tasa / 100)).\n  3. Incrementa un contador de meses.\n• El bucle se detiene cuando el saldo iguale o supere la meta.\n• Imprime el número total de meses requeridos y el saldo final alcanzado.",
+                input: "Ahorro inicial: 1000.0\nAporte mensual: 200.0\nTasa de interés mensual (%): 1.5\nMeta de ahorro: 3000.0",
+                output: "Mes 1: Saldo = $1218.00\nMes 2: Saldo = $1439.27\nMes 3: Saldo = $1663.86\n...\nMes 9: Saldo = $3026.45\n\n--- RESULTADO SIMULACIÓN ---\nTiempo requerido: 9 meses\nSaldo final alcanzado: $3026.45"
+            },
+            {
+                id: "ex-bucles-7",
+                title: "7. Analizador de Serie de Números (Estadística Básica)",
+                difficulty: "Medio",
+                category: "Bucles (for) e Instrucción continue",
+                description: "Solicita al usuario la cantidad de números que desea procesar y evalúa diversas propiedades estadísticas de los datos ingresados.\n\nRequisitos:\n• Pide al usuario un número N de elementos a ingresar.\n• Mediante un bucle for que itere N veces, solicita un número entero en cada ciclo.\n• Si el usuario ingresa un número negativo, ignóralo mediante la instrucción continue (no debe sumarse ni contarse para el promedio).\n• Para los números positivos o cero:\n  - Calcula la suma total.\n  - Determina cuál es el número mayor y el menor ingresado.\n• Al concluir el bucle, muestra la suma, el promedio de los números válidos y los valores máximo y mínimo.",
+                input: "Cantidad de elementos N: 5\nNúmeros ingresados: 12, -4, 8, 25, 3",
+                output: "Número -4 omitido (es negativo).\n\n--- ESTADÍSTICAS ---\nCantidad de números válidos: 4\nSuma total: 48\nPromedio: 12.00\nNúmero mayor: 25\nNúmero menor: 3"
+            },
+            {
+                id: "ex-bucles-8",
+                title: "8. Juego de Adivinanza con Rango Limitado",
+                difficulty: "Medio",
+                category: "Juegos y Condicionales (while/if)",
+                description: "Desarrolla un juego donde el usuario deba adivinar un número secreto previamente fijado en el programa (entre 1 y 100).\n\nRequisitos:\n• Define una variable numero_secreto = 42 y un número máximo de 6 intentos.\n• En un bucle while, solicita al usuario que adivine el número.\n• Valida que el número ingresado esté entre 1 y 100. Si está fuera de rango, no descuentes intentos y avisa al usuario.\n• Si el número es válido:\n  - Si es mayor al secreto: 'El número secreto es menor'.\n  - Si es menor al secreto: 'El número secreto es mayor'.\n  - Si es igual: felicita al usuario, indica cuántos intentos le tomó y rompe el bucle (break).\n• Si agota los 6 intentos sin adivinar, muestra un mensaje de derrota indicando el número secreto.",
+                input: "Intento 1: 150\nIntento 1: 20\nIntento 2: 50\nIntento 3: 42",
+                output: "Número fuera de rango (1-100). No se descuenta intento.\nEl número secreto es mayor.\nEl número secreto es menor.\n¡Felicidades! Adivinaste el número secreto (42) en 3 intentos."
+            },
+            {
+                id: "ex-bucles-9",
+                title: "9. Facturador de Compras con Descuentos por Categoría",
+                difficulty: "Difícil",
+                category: "Integración (for / match-case)",
+                description: "Crea un sistema para procesar la factura de un cliente que compra varios artículos de distintas categorías.\n\nRequisitos:\n• Pide cuántos productos va a registrar el cliente.\n• Usa un bucle for para iterar por cada producto:\n  - Solicita el nombre del producto, su precio (float) y la categoría en texto ('alimentos', 'electrónica', 'ropa').\n  - Aplica un descuento usando match / case sobre la categoría:\n    * 'alimentos': 5% de descuento.\n    * 'electrónica': 10% de descuento.\n    * 'ropa': 15% de descuento.\n    * Cualquier otra categoría: 0% de descuento.\n  - Calcula el subtotal descontado del producto e imprímelo en pantalla.\n• Acumula los subtotales en un total general.\n• Al finalizar la carga de todos los productos, aplica un 16% de IVA sobre el total general e imprime el monto final a pagar desglosado (Subtotal general, IVA y Total Neto).",
+                input: "Cantidad de productos: 2\n\nProducto 1: Leche | Precio: 2.00 | Categoría: alimentos\nProducto 2: Camisa | Precio: 20.00 | Categoría: ropa",
+                output: "Producto 1: Leche - Desc (5%): $0.10 -> Subtotal: $1.90\nProducto 2: Camisa - Desc (15%): $3.00 -> Subtotal: $17.00\n\n--- FACTURA FINAL ---\nSubtotal General: $18.90\nIVA (16%): $3.02\nTotal Neto a Pagar: $21.92"
+            },
+            {
+                id: "ex-bucles-10",
+                title: "10. Validador Criptográfico / Analizador de Cadenas",
+                difficulty: "Difícil",
+                category: "Procesamiento de Cadenas (Strings)",
+                description: "Diseña un evaluador de seguridad para contraseñas que analice carácter por carácter una cadena de texto ingresada por el usuario.\n\nRequisitos:\n• Solicita al usuario que ingrese una contraseña propuesta (input()).\n• Define variables booleanas (flags) en False: tiene_mayuscula, tiene_minuscula, tiene_numero y tiene_espacio.\n• Usa un bucle for para iterar directamente sobre la cadena de texto carácter por carácter:\n  - Revisa si el carácter es una letra mayúscula (.isupper()).\n  - Revisa si es minúscula (.islower()).\n  - Revisa si es un dígito numérico (.isdigit()).\n  - Revisa si es un espacio en blanco (char == ' ').\n• Evalúa las condiciones de seguridad mediante operadores lógicos:\n  - La contraseña debe tener al menos 8 caracteres de longitud (len() >= 8).\n  - Debe contener al menos una mayúscula, una minúscula y un número.\n  - NO debe contener espacios en blanco (not tiene_espacio).\n• Utiliza estructuras if / elif / else para mostrar un informe detallado de por qué la contraseña es válida o cuáles requisitos incumplió.",
+                input: "Contraseña ingresada: P@ss123",
+                output: "--- INFORME DE SEGURIDAD DE CONTRASEÑA ---\n[X] Longitud insuficiente (Mínimo 8 caracteres, actual: 7)\n[✓] Contiene al menos una mayúscula\n[✓] Contiene al menos una minúscula\n[✓] Contiene al menos un número\n[✓] No contiene espacios en blanco\n\nRESULTADO: Contraseña INSEGURA. Corrija los fallos indicados."
+            }
+        ];
 
-print(f"La letra '{letra}' aparece {cantidad} veces en la frase.")`,
-        explanation: "Convertir ambas cadenas a minúsculas con `lower()` estandariza la comparación, permitiendo que `count()` cuente tanto mayúsculas como minúsculas."
-      },
-      {
-        id: 3,
-        level: "Nivel 1: Dominando los Textos",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "Validador de Correos Básicos",
-        topic: "Método endswith()",
-        description: "Pide un correo electrónico al usuario.\n\nUtiliza el método endswith() para verificar si el correo termina en '.com'. Si es así, imprime 'Correo válido'. De lo contrario, imprime 'El correo debe terminar en .com'.",
-        sampleInput: "Correo: estudiante@plus58.com",
-        sampleOutput: "Correo válido",
-        pythonCode: `# Ejercicio 3: Validador de Correos Básicos
+        // App State - Load default exercises or custom ones stored
+        let exercises = JSON.parse(localStorage.getItem('code_exercises_bucles')) || defaultExercises;
+        let currentIndex = 0;
+        let solvedMap = JSON.parse(localStorage.getItem('solved_exercises_bucles')) || {};
+        let favoritesMap = JSON.parse(localStorage.getItem('favorite_exercises_bucles')) || {};
 
-correo = input("Ingresa tu correo electrónico: ").strip()
+        // DOM Elements
+        const exTitle = document.getElementById('ex-title');
+        const exDescription = document.getElementById('ex-description');
+        const exInput = document.getElementById('ex-input');
+        const exOutput = document.getElementById('ex-output');
+        const difficultyBadge = document.getElementById('difficulty-badge');
+        const tagsContainer = document.getElementById('tags-container');
+        const counterBadge = document.getElementById('counter-badge');
+        const exerciseSelect = document.getElementById('exercise-select');
 
-if correo.endswith(".com"):
-    print("Correo válido")
-else:
-    print("El correo debe terminar en .com")`,
-        explanation: "`endswith('.com')` verifica si la cadena finaliza exactamente con la subcadena especificada, retornando `True` o `False`."
-      },
-      {
-        id: 4,
-        level: "Nivel 2: Cajas Múltiples",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "El Carrito de Compras",
-        topic: "Listas: append() y len()",
-        description: "Crea una lista vacía llamada carrito. Pide al usuario 3 productos uno por uno e insértalos en la lista utilizando append().\n\nLuego, imprime cuántos artículos hay en el carrito usando la función len() y muestra la lista completa.",
-        sampleInput: "Producto 1: Manzana\nProducto 2: Pan\nProducto 3: Leche",
-        sampleOutput: "Tienes 3 productos en tu carrito:\n['Manzana', 'Pan', 'Leche']",
-        pythonCode: `# Ejercicio 4: El Carrito de Compras
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
 
-carrito = []
+        const copyInputBtn = document.getElementById('copy-input-btn');
+        const copyOutputBtn = document.getElementById('copy-output-btn');
 
-for i in range(1, 4):
-    producto = input(f"Ingresa el producto #{i}: ")
-    carrito.append(producto)
+        const toggleSolvedBtn = document.getElementById('toggle-solved-btn');
+        const solvedText = document.getElementById('solved-text');
+        const toggleFavBtn = document.getElementById('toggle-favorite-btn');
 
-print(f"\\nTienes {len(carrito)} productos en tu carrito:")
-print(carrito)`,
-        explanation: "`append()` agrega un nuevo elemento al final de la lista y `len()` retorna el total de elementos almacenados."
-      },
-      {
-        id: 5,
-        level: "Nivel 2: Cajas Múltiples",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "Orden y Limpieza",
-        topic: "Listas: sort() y pop()",
-        description: "Dada la lista puntajes = [45, 12, 89, 34, 100, 2]. Utiliza el método sort() para ordenarla de menor a mayor.\n\nLuego, utiliza pop() sin argumento para eliminar el puntaje más alto (el último), y muestra la lista resultante.",
-        sampleInput: "(Lista inicial: [45, 12, 89, 34, 100, 2])",
-        sampleOutput: "Puntaje máximo eliminado: 100\nLista de puntajes final: [2, 12, 34, 45, 89]",
-        pythonCode: `# Ejercicio 5: Orden y Limpieza
+        // Modals
+        const gridViewBtn = document.getElementById('grid-view-btn');
+        const listModal = document.getElementById('list-modal');
+        const closeListModal = document.getElementById('close-list-modal');
+        const exerciseGridList = document.getElementById('exercise-grid-list');
+        const searchInput = document.getElementById('search-exercise-input');
 
-puntajes = [45, 12, 89, 34, 100, 2]
-print(f"Puntajes originales: {puntajes}")
+        const addCustomBtn = document.getElementById('add-custom-btn');
+        const addModal = document.getElementById('add-modal');
+        const closeAddModal = document.getElementById('close-add-modal');
+        const addForm = document.getElementById('add-exercise-form');
 
-# Ordenamos la lista de menor a mayor
-puntajes.sort()
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
 
-# pop() sin parámetros remueve y retorna el último elemento
-eliminado = puntajes.pop()
+        // Core Render Function
+        function renderExercise() {
+            const current = exercises[currentIndex];
+            if (!current) return;
 
-print(f"Puntaje máximo eliminado: {eliminado}")
-print(f"Lista de puntajes final: {puntajes}")`,
-        explanation: "`sort()` modifica la lista directamente ordenándola numéricamente, dejando el mayor valor al final donde `pop()` lo remueve."
-      },
-      {
-        id: 6,
-        level: "Nivel 2: Cajas Múltiples",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "El Separador de Frases",
-        topic: "Método split()",
-        description: "Pide al usuario que escriba sus 3 colores favoritos separados por comas (ej: 'rojo,verde,azul').\n\nUtiliza el método split(',') para convertir ese texto en una lista real de Python e imprímela.",
-        sampleInput: "Colores: azul,amarillo,rojo",
-        sampleOutput: "Lista de colores:\n['azul', 'amarillo', 'rojo']",
-        pythonCode: `# Ejercicio 6: El Separador de Frases
+            // Basic Info
+            exTitle.textContent = current.title;
+            exDescription.textContent = current.description;
+            exInput.textContent = current.input;
+            exOutput.textContent = current.output;
 
-entrada = input("Ingresa 3 colores separados por comas (ej: rojo,verde,azul): ")
+            // Difficulty styling
+            let diffStyle = "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300";
+            if (current.difficulty === "Medio") {
+                diffStyle = "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300";
+            } else if (current.difficulty === "Difícil") {
+                diffStyle = "bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-300";
+            }
+            difficultyBadge.className = `px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${diffStyle}`;
+            difficultyBadge.textContent = current.difficulty;
 
-# split convierte el texto en una lista usando la coma como delimitador
-lista_colores = entrada.split(",")
+            // Tags
+            tagsContainer.innerHTML = `
+                <span class="px-2.5 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-md flex items-center gap-1">
+                    <i class="fa-solid fa-tag text-[10px] text-sky-500"></i> ${current.category || 'General'}
+                </span>
+            `;
 
-print("Lista de colores:")
-print(lista_colores)`,
-        explanation: "`split(',')` divide una cadena de texto en subcadenas basándose en el separador indicado y devuelve una lista de elementos."
-      },
-      {
-        id: 7,
-        level: "Nivel 3: Funciones",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "La Función Saludador",
-        topic: "Definición de Funciones y return",
-        description: "Crea una función llamada saludar_usuario(nombre) que reciba un nombre como parámetro y utilice return para devolver el texto '¡Hola [nombre], bienvenido al sistema!'.\n\nPide el nombre al usuario con un input() y llama a la función para imprimir el resultado.",
-        sampleInput: "Nombre: Carlos",
-        sampleOutput: "¡Hola Carlos, bienvenido al sistema!",
-        pythonCode: `# Ejercicio 7: La Función Saludador
+            // Counter Badge
+            counterBadge.textContent = `${currentIndex + 1} / ${exercises.length}`;
 
-def saludar_usuario(nombre):
-    return f"¡Hola {nombre}, bienvenido al sistema!"
+            // Buttons state
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === exercises.length - 1;
 
-# Código principal
-usuario = input("Ingresa tu nombre: ")
-mensaje = saludar_usuario(usuario)
+            // Select Dropdown Sync
+            populateSelectOptions();
+            exerciseSelect.value = currentIndex;
 
-print(mensaje)`,
-        explanation: "Las funciones definidas con `def` reciben argumentos como parámetros y `return` devuelve el valor resultante para su uso posterior."
-      },
-      {
-        id: 8,
-        level: "Nivel 3: Funciones",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "La Función Calculadora de Áreas",
-        topic: "Parámetros Múltiples y return",
-        description: "Define una función llamada area_rectangulo(base, altura). Dentro de la función, calcula el área multiplicando ambos números y devuélvela con return.\n\nPide al usuario la base y la altura, conviértelos a float y llama a tu función para mostrar el resultado.",
-        sampleInput: "Base: 5.5, Altura: 4.0",
-        sampleOutput: "El área del rectángulo es: 22.00",
-        pythonCode: `# Ejercicio 8: La Función Calculadora de Áreas
+            // Solved Status UI
+            updateSolvedUI(current.id);
 
-def area_rectangulo(base, altura):
-    return base * altura
-
-# Código principal
-b = float(input("Ingresa la base del rectángulo: "))
-h = float(input("Ingresa la altura del rectángulo: "))
-
-resultado = area_rectangulo(b, h)
-print(f"El área del rectángulo es: {resultado:.2f}")`,
-        explanation: "La función procesa dos parámetros numéricos y retorna el producto de la multiplicación."
-      },
-      {
-        id: 9,
-        level: "Nivel 3: Funciones",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "La Función Evaluadora de Notas",
-        topic: "Retorno Booleano (True / False)",
-        description: "Crea una función llamada es_aprobado(nota). La función debe retornar True si la nota es mayor o igual a 60, y False si es menor.\n\nPide una nota al usuario, pásala por la función y utiliza un if basándote en lo que retornó la función para imprimir 'Aprobaste' o 'Reprobaste'.",
-        sampleInput: "Nota: 75",
-        sampleOutput: "¡Aprobaste!",
-        pythonCode: `# Ejercicio 9: La Función Evaluadora de Notas
-
-def es_aprobado(nota):
-    return nota >= 60
-
-# Código principal
-calificacion = float(input("Ingresa tu nota (0 - 100): "))
-
-if es_aprobado(calificacion):
-    print("¡Aprobaste!")
-else:
-    print("Reprobaste.")`,
-        explanation: "La condición `nota >= 60` devuelve directamente un valor booleano (`True` o `False`) que luego evalúa la estructura `if`."
-      },
-      {
-        id: 10,
-        level: "Nivel 4: Desafío Integrador",
-        badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-        title: "El Filtro de Palabras Prohibidas",
-        topic: "Censura de Texto con lower() y replace()",
-        description: "Crea una función llamada censurar_texto(frase).\n\n• Dentro de la función, convierte la frase a minúsculas.\n• Utiliza el método replace() para buscar la palabra 'tonto' y reemplazarla por '*****'.\n• La función debe retornar la frase censurada.\n\nFuera de la función, pide al usuario que escriba un comentario, pásalo por tu función e imprime el comentario limpio.",
-        sampleInput: "Comentario: ¡Este juego es tonto!",
-        sampleOutput: "Comentario censurado: ¡este juego es *****!",
-        pythonCode: `# Ejercicio 10: El Filtro de Palabras Prohibidas
-
-def censurar_texto(frase):
-    frase_min = frase.lower()
-    frase_limpia = frase_min.replace("tonto", "*****")
-    return frase_limpia
-
-# Código principal
-comentario = input("Escribe tu comentario: ")
-resultado = censurar_texto(comentario)
-
-print(f"Comentario censurado: {resultado}")`,
-        explanation: "Combina la estandarización de texto a minúsculas con `lower()` y la sustitución de caracteres mediante `replace()` dentro de una función reutilizable."
-      }
-    ];
-
-    let currentExerciseId = 1;
-    let currentMode = 'enunciado'; // 'enunciado' | 'codigo'
-    let pyodideInstance = null;
-    let isTerminalOpen = false;
-
-    // Initialize UI on load
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      renderQuickNumberBar();
-      loadExercise(1);
-      setupKeyboardShortcuts();
-    });
-
-    function renderQuickNumberBar() {
-      const bar = document.getElementById('quick-num-bar');
-      bar.innerHTML = exercisesData.map(ex => {
-        const isActive = ex.id === currentExerciseId;
-        return `
-          <button 
-            onclick="loadExercise(${ex.id})" 
-            class="w-8 h-8 md:w-10 md:h-10 rounded-xl font-black text-xs md:text-sm font-mono transition-all flex items-center justify-center ${
-              isActive 
-                ? 'bg-brand-500 text-slate-950 shadow-md shadow-brand-500/30' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }"
-            title="Ejercicio ${ex.id}"
-          >
-            ${ex.id < 10 ? '0' + ex.id : ex.id}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function loadExercise(id) {
-      currentExerciseId = id;
-      const ex = exercisesData.find(e => e.id === id);
-      if (!ex) return;
-
-      renderQuickNumberBar();
-
-      // Update Header & Badge
-      const badge = document.getElementById('ex-level-badge');
-      badge.textContent = ex.level;
-      badge.className = `px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-extrabold uppercase tracking-wider ${ex.badgeColor}`;
-      document.getElementById('ex-topic-badge').textContent = ex.topic;
-      document.getElementById('ex-title').textContent = `${ex.id}. ${ex.title}`;
-
-      // Update View 1 (Enunciado)
-      document.getElementById('ex-description').innerHTML = escapeAndFormatNewlines(ex.description);
-      document.getElementById('ex-sample-input').textContent = ex.sampleInput;
-      document.getElementById('ex-sample-output').textContent = ex.sampleOutput;
-
-      // Update View 2 (Código)
-      const codeBlock = document.getElementById('ex-code-block');
-      codeBlock.textContent = ex.pythonCode;
-      Prism.highlightElement(codeBlock);
-      document.getElementById('ex-explanation').textContent = ex.explanation;
-
-      // Update Bottom Nav
-      document.getElementById('nav-counter').textContent = `${ex.id < 10 ? '0' + ex.id : ex.id} / ${exercisesData.length}`;
-      document.getElementById('btn-prev').disabled = ex.id === 1;
-      document.getElementById('btn-next').disabled = ex.id === exercisesData.length;
-
-      // Reset mode to enunciado when changing exercise
-      setMode('enunciado');
-    }
-
-    function setMode(mode) {
-      currentMode = mode;
-
-      const btnEnunciado = document.getElementById('btn-mode-enunciado');
-      const btnCodigo = document.getElementById('btn-mode-codigo');
-      const viewEnunciado = document.getElementById('view-enunciado');
-      const viewCodigo = document.getElementById('view-codigo');
-
-      if (mode === 'enunciado') {
-        btnEnunciado.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 bg-brand-500 text-slate-950 shadow-lg glow-accent";
-        btnCodigo.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 text-slate-400 hover:text-white hover:bg-slate-800/60";
-        viewEnunciado.classList.remove('hidden');
-        viewCodigo.classList.add('hidden');
-      } else {
-        btnCodigo.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 bg-brand-500 text-slate-950 shadow-lg glow-accent";
-        btnEnunciado.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 text-slate-400 hover:text-white hover:bg-slate-800/60";
-        viewCodigo.classList.remove('hidden');
-        viewEnunciado.classList.add('hidden');
-      }
-    }
-
-    function toggleMode() {
-      setMode(currentMode === 'enunciado' ? 'codigo' : 'enunciado');
-    }
-
-    function navigateExercise(delta) {
-      const newId = currentExerciseId + delta;
-      if (newId >= 1 && newId <= exercisesData.length) {
-        loadExercise(newId);
-      }
-    }
-
-    function setupKeyboardShortcuts() {
-      document.addEventListener('keydown', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-        if (e.key === 'ArrowLeft') {
-          navigateExercise(-1);
-        } else if (e.key === 'ArrowRight') {
-          navigateExercise(1);
-        } else if (e.key === ' ' || e.code === 'Space' || e.key.toLowerCase() === 't') {
-          e.preventDefault();
-          toggleMode();
-        } else if (e.key.toLowerCase() === 'f') {
-          toggleFullscreen();
+            // Favorite Status UI
+            updateFavoriteUI(current.id);
         }
-      });
-    }
 
-    async function runPythonCode() {
-      const ex = exercisesData.find(e => e.id === currentExerciseId);
-      if (!ex) return;
-
-      if (!isTerminalOpen) {
-        toggleTerminalVisibility();
-      }
-
-      const term = document.getElementById('terminal-output');
-      term.innerHTML = "⏳ Cargando entorno de Python en el navegador...\n";
-
-      if (!pyodideInstance) {
-        try {
-          pyodideInstance = await loadPyodide({
-            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/"
-          });
-        } catch (err) {
-          term.innerHTML = "❌ Error al cargar el motor de Python.\n";
-          return;
+        function populateSelectOptions() {
+            exerciseSelect.innerHTML = '';
+            exercises.forEach((ex, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                const isDone = solvedMap[ex.id] ? '✓ ' : '';
+                opt.textContent = `${isDone}${idx + 1}. ${ex.title.replace(/^\d+\.\s*/, '')}`;
+                exerciseSelect.appendChild(opt);
+            });
         }
-      }
 
-      term.innerHTML = "▶️ Ejecutando script...\n----------------------------------------\n";
+        function updateSolvedUI(id) {
+            const isSolved = !!solvedMap[id];
+            if (isSolved) {
+                toggleSolvedBtn.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl bg-emerald-500 text-white shadow-sm transition-all";
+                toggleSolvedBtn.querySelector('i').className = "fa-solid fa-circle-check text-base text-white";
+                solvedText.textContent = "Resuelto";
+            } else {
+                toggleSolvedBtn.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all";
+                toggleSolvedBtn.querySelector('i').className = "fa-regular fa-circle-check text-base text-slate-400";
+                solvedText.textContent = "Sin Resolver";
+            }
+        }
 
-      try {
-        let outputBuffer = "";
+        function updateFavoriteUI(id) {
+            const isFav = !!favoritesMap[id];
+            if (isFav) {
+                toggleFavBtn.innerHTML = `<i class="fa-solid fa-star text-lg text-amber-500"></i>`;
+            } else {
+                toggleFavBtn.innerHTML = `<i class="fa-regular fa-star text-lg text-slate-400"></i>`;
+            }
+        }
 
-        pyodideInstance.setStdout({
-          batched: (str) => {
-            outputBuffer += str + "\n";
-          }
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            let bg = 'bg-slate-800 text-white';
+            let icon = 'fa-circle-info text-sky-400';
+
+            if (type === 'success') {
+                bg = 'bg-emerald-900 text-emerald-100 border border-emerald-700';
+                icon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'error') {
+                bg = 'bg-rose-900 text-rose-100 border border-rose-700';
+                icon = 'fa-triangle-exclamation text-rose-400';
+            }
+
+            toast.className = `${bg} px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-xs sm:text-sm font-medium transition-all transform translate-y-2 opacity-0 duration-200 z-50`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i><span>${message}</span>`;
+
+            const container = document.getElementById('toast-container');
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Copy Clipboard Helper using standard execCommand fallback for iFrame compatibility
+        function copyToClipboard(text, label) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showToast(`${label} copiada al portapapeles`, 'success');
+            } catch (err) {
+                showToast('Error al copiar al portapapeles', 'error');
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderExercise();
+            }
         });
 
-        pyodideInstance.setStdin({
-          stdin: () => {
-            const result = window.prompt("Entrada requerida por input():");
-            term.innerHTML += `> Ingresado: ${result || ''}\n`;
-            return (result || "") + "\n";
-          }
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < exercises.length - 1) {
+                currentIndex++;
+                renderExercise();
+            }
         });
 
-        await pyodideInstance.runPythonAsync(ex.pythonCode);
+        exerciseSelect.addEventListener('change', (e) => {
+            currentIndex = parseInt(e.target.value);
+            renderExercise();
+        });
 
-        term.innerHTML += outputBuffer + "\n----------------------------------------\n✅ Ejecución finalizada correctamente.";
-      } catch (error) {
-        term.innerHTML += `\n❌ Error de Ejecución:\n${error.message}`;
-      }
-    }
+        copyInputBtn.addEventListener('click', () => {
+            copyToClipboard(exInput.textContent, 'Entrada de ejemplo');
+        });
 
-    function toggleTerminalVisibility() {
-      isTerminalOpen = !isTerminalOpen;
-      const termContainer = document.getElementById('terminal-container');
-      const chevron = document.getElementById('term-chevron');
+        copyOutputBtn.addEventListener('click', () => {
+            copyToClipboard(exOutput.textContent, 'Salida esperada');
+        });
 
-      if (isTerminalOpen) {
-        termContainer.classList.remove('hidden');
-        chevron.setAttribute('data-lucide', 'chevron-up');
-      } else {
-        termContainer.classList.add('hidden');
-        chevron.setAttribute('data-lucide', 'chevron-down');
-      }
-      lucide.createIcons();
-    }
+        toggleSolvedBtn.addEventListener('click', () => {
+            const currentId = exercises[currentIndex].id;
+            solvedMap[currentId] = !solvedMap[currentId];
+            localStorage.setItem('solved_exercises', JSON.stringify(solvedMap));
+            updateSolvedUI(currentId);
+            populateSelectOptions();
+            showToast(solvedMap[currentId] ? 'Marcado como Resuelto' : 'Marcado como Sin Resolver');
+        });
 
-    function clearTerminal() {
-      const term = document.getElementById('terminal-output');
-      if (term) term.innerHTML = "Consola limpia.";
-    }
+        toggleFavBtn.addEventListener('click', () => {
+            const currentId = exercises[currentIndex].id;
+            favoritesMap[currentId] = !favoritesMap[currentId];
+            localStorage.setItem('favorite_exercises', JSON.stringify(favoritesMap));
+            updateFavoriteUI(currentId);
+            showToast(favoritesMap[currentId] ? 'Agregado a Favoritos' : 'Eliminado de Favoritos');
+        });
 
-    function copyCurrentCode() {
-      const ex = exercisesData.find(e => e.id === currentExerciseId);
-      if (ex) {
-        navigator.clipboard.writeText(ex.pythonCode);
-        showToast("Código copiado al portapapeles");
-      }
-    }
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            // Prevent if user is typing in input or textarea
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                return;
+            }
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                renderExercise();
+            } else if (e.key === 'ArrowRight' && currentIndex < exercises.length - 1) {
+                currentIndex++;
+                renderExercise();
+            }
+        });
 
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
+        // Grid View Modal
+        gridViewBtn.addEventListener('click', () => {
+            renderModalGrid();
+            listModal.classList.remove('hidden');
+        });
+
+        closeListModal.addEventListener('click', () => {
+            listModal.classList.add('hidden');
+        });
+
+        function renderModalGrid(searchTerm = '') {
+            exerciseGridList.innerHTML = '';
+            const filtered = exercises.filter(ex => 
+                ex.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                ex.category.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                exerciseGridList.innerHTML = `<p class="text-center py-6 text-slate-400 text-sm">No se encontraron ejercicios con ese criterio.</p>`;
+                return;
+            }
+
+            filtered.forEach((ex) => {
+                const originalIndex = exercises.findIndex(e => e.id === ex.id);
+                const isSolved = solvedMap[ex.id];
+                const isFav = favoritesMap[ex.id];
+
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-xl border ${originalIndex === currentIndex ? 'border-sky-500 bg-sky-50/50 dark:bg-sky-950/20' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'} hover:border-sky-400 transition-all cursor-pointer flex items-center justify-between gap-3`;
+                
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 truncate">
+                        <span class="w-6 text-center text-xs font-bold text-slate-400">${originalIndex + 1}</span>
+                        <div class="truncate">
+                            <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate flex items-center gap-2">
+                                ${ex.title.replace(/^\d+\.\s*/, '')}
+                                ${isFav ? '<i class="fa-solid fa-star text-amber-500 text-xs"></i>' : ''}
+                            </h4>
+                            <span class="text-xs text-slate-400">${ex.category} • ${ex.difficulty}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        ${isSolved ? '<span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 font-medium">Resuelto</span>' : ''}
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </div>
+                `;
+
+                item.addEventListener('click', () => {
+                    currentIndex = originalIndex;
+                    renderExercise();
+                    listModal.classList.add('hidden');
+                });
+
+                exerciseGridList.appendChild(item);
+            });
         }
-      }
-    }
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-message');
-      
-      toastMsg.textContent = message;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
+        searchInput.addEventListener('input', (e) => {
+            renderModalGrid(e.target.value);
+        });
 
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2500);
-    }
+        // Add Custom Exercise
+        addCustomBtn.addEventListener('click', () => {
+            addModal.classList.remove('hidden');
+        });
 
-    function escapeAndFormatNewlines(str) {
-      return str.replace(/\n/g, '<br>');
-    }
-  </script>
+        closeAddModal.addEventListener('click', () => {
+            addModal.classList.add('hidden');
+        });
+
+        addForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newEx = {
+                id: 'custom-' + Date.now(),
+                title: `${exercises.length + 1}. ${document.getElementById('new-title').value}`,
+                difficulty: document.getElementById('new-difficulty').value,
+                category: document.getElementById('new-category').value || 'Personalizado',
+                description: document.getElementById('new-description').value,
+                input: document.getElementById('new-input').value,
+                output: document.getElementById('new-output').value
+            };
+
+            exercises.push(newEx);
+            localStorage.setItem('code_exercises', JSON.stringify(exercises));
+            
+            addModal.classList.add('hidden');
+            addForm.reset();
+            
+            currentIndex = exercises.length - 1;
+            renderExercise();
+            showToast('¡Nuevo ejercicio agregado con éxito!', 'success');
+        });
+
+        // Theme Mode Setup
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            darkIcon.classList.remove('hidden');
+            lightIcon.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            lightIcon.classList.remove('hidden');
+            darkIcon.classList.add('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // App Initialization
+        window.onload = function() {
+            renderExercise();
+        };
+    </script>
 </body>
 </html>

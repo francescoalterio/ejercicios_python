@@ -1,908 +1,750 @@
 <!DOCTYPE html>
-<html lang="es" class="dark scroll-smooth h-full">
+<html lang="es" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plus58 | Modo TV - Programación Básica con Python</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              300: '#6ee7b7',
-              400: '#34d399',
-              500: '#10b981',
-              600: '#059669',
-              accent: '#00f59b'
-            },
-            darkbg: '#070a12',
-            cardbg: '#0f172a',
-            codebg: '#090d16'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['Fira Code', 'JetBrains Mono', 'Consolas', 'monospace']
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Ejercicios de Programación</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-  
-  <!-- Fonts & Lucide Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Prism.js for Syntax Highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-
-  <!-- Pyodide Python Runner -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
-
-  <style>
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #070a12;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
-    }
+    </script>
     
-    .tv-glass {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .glow-accent {
-      box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.35);
-    }
-
-    .tv-code-font {
-      font-size: 1.35rem !important;
-      line-height: 1.8 !important;
-    }
-
-    pre[class*="language-"] {
-      margin: 0 !important;
-      border-radius: 1rem !important;
-      background: #090d16 !important;
-      padding: 1.75rem !important;
-    }
-  </style>
+    <style>
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
 </head>
-<body class="bg-darkbg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-brand-500 selection:text-slate-950 overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col font-sans transition-colors duration-200">
 
-  <!-- Header TV Optimized -->
-  <header class="bg-slate-950/90 border-b border-slate-800/80 px-6 py-4 sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-4">
-      
-      <!-- Logo & Class Info -->
-      <div class="flex items-center gap-4">
-        <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-brand-400 to-emerald-600 flex items-center justify-center font-black text-slate-950 text-2xl shadow-xl glow-accent">
-          +58
+    <!-- Top Header Navigation -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-sky-500 to-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+                    <i class="fa-solid font-bold fa-code text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-slate-900 dark:text-white">CodeExercise Hub</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Practica y resuelve problemas de código</p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button id="grid-view-btn" title="Ver lista de ejercicios" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-700/60 rounded-lg transition-colors">
+                    <i class="fa-solid fa-th-large"></i>
+                    <span class="hidden md:inline">Ver Todos</span>
+                </button>
+
+                <button id="add-custom-btn" class="flex items-center gap-2 px-3 py-2 text-sm font-medium bg-sky-500 hover:bg-sky-600 text-white rounded-lg shadow-sm hover:shadow transition-all">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="hidden sm:inline">Nuevo Ejercicio</span>
+                </button>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" title="Cambiar Tema" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                    <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-lg hidden"></i>
+                    <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-lg"></i>
+                </button>
+            </div>
         </div>
-        <div>
-          <div class="flex items-center gap-3">
-            <h1 class="font-black text-2xl md:text-3xl tracking-tight text-white">Plus58</h1>
-            <span class="px-3 py-1 text-xs md:text-sm font-bold rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">
-              Modo TV / Aula
-            </span>
-          </div>
-          <p class="text-slate-400 text-xs md:text-sm font-medium">Programación Básica con Python</p>
-        </div>
-      </div>
+    </header>
 
-      <!-- Center Quick Number Selector -->
-      <div class="flex items-center gap-1.5 md:gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800" id="quick-num-bar">
-        <!-- Generated by JS -->
-      </div>
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
 
-      <!-- Controls Right: Fullscreen & Shortcuts Help -->
-      <div class="flex items-center gap-3">
-        <button onclick="toggleFullscreen()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl border border-slate-800 font-bold text-sm flex items-center gap-2 transition-all">
-          <i data-lucide="maximize" class="w-4 h-4 text-brand-400"></i>
-          <span class="hidden sm:inline">Pantalla Completa (F)</span>
-        </button>
-      </div>
+        <!-- Exercise Controls Top Bar -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/80 shadow-sm flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Navigation buttons -->
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-sm font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span class="hidden sm:inline">Anterior</span>
+                </button>
+                <button id="next-btn" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-sm font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span class="hidden sm:inline">Siguiente</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
 
-    </div>
-  </header>
+            <!-- Current Indicator & Jump Menu -->
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Ejercicio</span>
+                <select id="exercise-select" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-xl px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:outline-none cursor-pointer max-w-[200px] sm:max-w-xs truncate">
+                    <!-- Dynamic options injected here -->
+                </select>
+                <span id="counter-badge" class="text-xs px-2.5 py-1 bg-slate-100 dark:bg-slate-700 font-mono rounded-full text-slate-600 dark:text-slate-300 font-medium">
+                    1 / 1
+                </span>
+            </div>
 
-  <!-- Main Workspace optimized for big TV screens -->
-  <main class="flex-1 max-w-[1700px] w-full mx-auto px-4 md:px-8 py-6 flex flex-col justify-between">
-    
-    <!-- Top Action Bar: Level Badge & VIEW TOGGLE BUTTON -->
-    <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-6">
-      
-      <!-- Current Exercise Badge & Title -->
-      <div>
-        <div class="flex items-center gap-3 mb-1">
-          <span id="ex-level-badge" class="px-3 py-1 rounded-lg text-xs md:text-sm font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-            Nivel 1: Fáciles
-          </span>
-          <span id="ex-topic-badge" class="text-slate-400 text-sm md:text-base font-semibold">
-            Variables y Operadores
-          </span>
-        </div>
-        <h2 id="ex-title" class="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
-          1. Calculadora de edad para mascotas
-        </h2>
-      </div>
-
-      <!-- MAIN MODE TOGGLE SWITCH (Enunciado vs Código) -->
-      <div class="bg-slate-900/90 p-2 rounded-2xl border border-slate-800/80 flex items-center gap-2 self-start lg:self-auto shadow-2xl">
-        <button 
-          id="btn-mode-enunciado" 
-          onclick="setMode('enunciado')"
-          class="flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 bg-brand-500 text-slate-950 shadow-lg glow-accent"
-        >
-          <i data-lucide="file-text" class="w-6 h-6"></i>
-          <span>📄 Ver Enunciado</span>
-        </button>
-
-        <button 
-          id="btn-mode-codigo" 
-          onclick="setMode('codigo')"
-          class="flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 text-slate-400 hover:text-white hover:bg-slate-800/60"
-        >
-          <i data-lucide="code-2" class="w-6 h-6"></i>
-          <span>💻 Ver Código de Resolución</span>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- MAIN DISPLAY CARD (Toggles between Enunciado and Código) -->
-    <div class="tv-glass rounded-3xl p-6 md:p-10 border border-slate-800 shadow-2xl min-h-[520px] flex flex-col justify-between relative overflow-hidden">
-      
-      <!-- VIEW 1: ENUNCIADO (TEXTO GRANDE) -->
-      <div id="view-enunciado" class="space-y-6 animate-in fade-in duration-200">
-        
-        <!-- Pistas & Conceptos Clave Box (Tools Badge Box) -->
-        <div class="bg-gradient-to-r from-emerald-950/60 via-slate-950/80 to-slate-950/80 p-5 md:p-6 rounded-2xl border border-brand-500/30 shadow-lg">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
-            <h3 class="text-xs md:text-sm font-black uppercase tracking-widest text-brand-400 flex items-center gap-2.5">
-              <span class="p-1.5 bg-brand-500/20 text-brand-400 rounded-lg border border-brand-500/30">
-                <i data-lucide="sparkles" class="w-4 h-4"></i>
-              </span>
-              Caja de Herramientas & Conceptos a Utilizar
-            </h3>
-            <span class="text-xs text-slate-400 font-medium hidden sm:inline">Pista guía para resolver el ejercicio</span>
-          </div>
-          <div id="ex-concepts-chips" class="flex flex-wrap items-center gap-2.5 pt-1">
-            <!-- Rendered dynamically by JS -->
-          </div>
+            <!-- Quick Status Actions -->
+            <div class="flex items-center gap-2">
+                <button id="toggle-favorite-btn" title="Guardar como favorito" class="p-2 text-slate-400 hover:text-amber-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <i class="fa-regular fa-star text-lg"></i>
+                </button>
+                <button id="toggle-solved-btn" title="Marcar como resuelto" class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all">
+                    <i class="fa-regular fa-circle-check text-base text-slate-400"></i>
+                    <span id="solved-text" class="hidden md:inline">Sin Resolver</span>
+                </button>
+            </div>
         </div>
 
-        <!-- Description Box -->
-        <div class="bg-slate-950/80 p-6 md:p-8 rounded-2xl border border-slate-800/90">
-          <h3 class="text-xs md:text-sm font-extrabold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-            <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i>
-            Enunciado del Problema
-          </h3>
-          <p id="ex-description" class="text-slate-100 text-2xl md:text-3xl lg:text-4xl leading-relaxed font-semibold">
-            <!-- Rendered by JS -->
-          </p>
+        <!-- Exercise Main Display Card -->
+        <div id="exercise-card" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-md overflow-hidden flex flex-col transition-all">
+            
+            <!-- Card Header Header -->
+            <div class="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-700/60 bg-gradient-to-r from-slate-50/50 to-white dark:from-slate-800 dark:to-slate-800/50">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2 flex-wrap" id="tags-container">
+                        <!-- Badges injected dynamically -->
+                    </div>
+                    <span id="difficulty-badge" class="px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider">
+                        Fácil
+                    </span>
+                </div>
+
+                <h2 id="ex-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    Cargando título...
+                </h2>
+            </div>
+
+            <!-- Statement Section -->
+            <div class="p-6 sm:p-8 space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold text-sky-600 dark:text-sky-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-align-left"></i>
+                        Enunciado del Problema
+                    </h3>
+                    <div id="ex-description" class="text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed whitespace-pre-line space-y-2">
+                        <!-- Description content -->
+                    </div>
+                </div>
+
+                <!-- Input and Expected Output Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    
+                    <!-- Example Input Box -->
+                    <div class="flex flex-col bg-slate-900 text-slate-100 rounded-xl overflow-hidden shadow-inner border border-slate-800">
+                        <div class="px-4 py-2.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-right-to-bracket text-sky-400"></i>
+                                Entrada de Ejemplo
+                            </span>
+                            <button id="copy-input-btn" class="px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded transition-colors flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copiar</span>
+                            </button>
+                        </div>
+                        <div class="p-4 flex-1 overflow-x-auto">
+                            <pre><code id="ex-input" class="code-font text-sm text-sky-300 whitespace-pre-wrap"></code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Expected Output Box -->
+                    <div class="flex flex-col bg-slate-900 text-slate-100 rounded-xl overflow-hidden shadow-inner border border-slate-800">
+                        <div class="px-4 py-2.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-right-from-bracket text-emerald-400"></i>
+                                Salida Esperada
+                            </span>
+                            <button id="copy-output-btn" class="px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded transition-colors flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copiar</span>
+                            </button>
+                        </div>
+                        <div class="p-4 flex-1 overflow-x-auto">
+                            <pre><code id="ex-output" class="code-font text-sm text-emerald-300 whitespace-pre-wrap"></code></pre>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Sample Input / Output Grid for TV -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-slate-950/90 border border-slate-800/80 p-6 rounded-2xl">
-            <span class="text-slate-400 font-bold uppercase tracking-wider text-xs md:text-sm block mb-2 flex items-center gap-2">
-              <i data-lucide="arrow-down-right" class="w-4 h-4 text-emerald-400"></i> Entrada de Ejemplo
-            </span>
-            <pre id="ex-sample-input" class="text-xl md:text-2xl font-mono text-emerald-300 font-bold whitespace-pre-wrap"></pre>
-          </div>
-
-          <div class="bg-slate-950/90 border border-slate-800/80 p-6 rounded-2xl">
-            <span class="text-slate-400 font-bold uppercase tracking-wider text-xs md:text-sm block mb-2 flex items-center gap-2">
-              <i data-lucide="terminal" class="w-4 h-4 text-brand-400"></i> Salida Esperada
-            </span>
-            <pre id="ex-sample-output" class="text-xl md:text-2xl font-mono text-brand-300 font-bold whitespace-pre-wrap"></pre>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIEW 2: CÓDIGO DE RESOLUCIÓN (LETRA GRANDE FUENTE MONO) -->
-      <div id="view-codigo" class="hidden space-y-6 animate-in fade-in duration-200">
-        <div class="flex items-center justify-between">
-          <h3 class="text-sm md:text-base font-extrabold uppercase tracking-widest text-brand-400 flex items-center gap-2">
-            <i data-lucide="code" class="w-5 h-5"></i>
-            Solución en Python
-          </h3>
-
-          <button onclick="copyCurrentCode()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-sm flex items-center gap-2 border border-slate-700 transition-colors">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-            <span>Copiar Código</span>
-          </button>
+        <!-- Shortcut info -->
+        <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 px-2">
+            <span>Usa las teclas <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-slate-700 dark:text-slate-300">←</kbd> y <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-slate-700 dark:text-slate-300">→</kbd> del teclado para navegar entre ejercicios.</span>
         </div>
 
-        <!-- Code Block with large TV font -->
-        <div class="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
-          <pre class="language-python tv-code-font"><code id="ex-code-block" class="language-python"># Código de solución</code></pre>
+    </main>
+
+    <!-- All Exercises List Modal -->
+    <div id="list-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-sky-500"></i>
+                    Lista Completa de Ejercicios
+                </h3>
+                <button id="close-list-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 border-b border-slate-100 dark:border-slate-700/50">
+                <input id="search-exercise-input" type="text" placeholder="Buscar ejercicio por nombre o palabra clave..." class="w-full bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm rounded-xl px-4 py-2.5 border-none focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            </div>
+            <div id="exercise-grid-list" class="p-4 overflow-y-auto space-y-2 flex-1">
+                <!-- Injected dynamically -->
+            </div>
         </div>
-
-        <!-- Explanation Banner -->
-        <div class="bg-slate-900/90 border border-amber-500/30 p-6 rounded-2xl flex items-start gap-4">
-          <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20 shrink-0">
-            <i data-lucide="lightbulb" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <h4 class="text-amber-400 font-black text-lg md:text-xl">Concepto Clave</h4>
-            <p id="ex-explanation" class="text-slate-200 text-lg md:text-xl font-medium mt-1">
-              Explicación breve del concepto
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- INTERACTIVE TERMINAL SECTION (Expandable/Collapsible) -->
-      <div class="mt-8 border-t border-slate-800/80 pt-6">
-        <div class="flex items-center justify-between mb-3">
-          <button onclick="toggleTerminalVisibility()" class="text-sm md:text-base font-extrabold text-slate-300 hover:text-brand-400 flex items-center gap-2 transition-colors">
-            <i data-lucide="terminal" class="w-5 h-5 text-brand-400"></i>
-            <span>Probar Ejecución en Vivo (Pyodide WASM)</span>
-            <i id="term-chevron" data-lucide="chevron-down" class="w-4 h-4"></i>
-          </button>
-
-          <div class="flex items-center gap-3">
-            <button onclick="runPythonCode()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-sm md:text-base rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20">
-              <i data-lucide="play" class="w-5 h-5 fill-slate-950"></i>
-              <span>Ejecutar Código</span>
-            </button>
-            <button onclick="clearTerminal()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl border border-slate-800 text-sm font-bold">
-              Limpiar
-            </button>
-          </div>
-        </div>
-
-        <div id="terminal-container" class="hidden">
-          <div id="terminal-output" class="font-mono text-lg md:text-xl bg-codebg border border-slate-800 p-5 rounded-2xl min-h-[140px] max-h-[260px] overflow-y-auto text-emerald-400 whitespace-pre-wrap leading-relaxed">
-Haz clic en "Ejecutar Código" para simular la consola interactiva...
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR FOR TV PRESENTER -->
-    <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
-      
-      <!-- Prev Button -->
-      <button 
-        id="btn-prev" 
-        onclick="navigateExercise(-1)" 
-        class="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl border border-slate-800 font-extrabold text-lg flex items-center justify-center gap-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-      >
-        <i data-lucide="arrow-left" class="w-6 h-6"></i>
-        <span>Ejercicio Anterior</span>
-      </button>
+    <!-- Add Custom Exercise Modal -->
+    <div id="add-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Agregar Nuevo Ejercicio</h3>
+                <button id="close-add-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="add-exercise-form" class="space-y-4 text-xs sm:text-sm">
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Título del Ejercicio</label>
+                    <input type="text" id="new-title" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                </div>
 
-      <!-- Center Indicator & Hotkey Hint -->
-      <div class="text-center font-mono text-slate-400 text-sm md:text-base font-bold">
-        <span id="nav-counter" class="text-brand-400 text-xl font-extrabold">01 / 10</span>
-        <span class="hidden lg:inline text-slate-500 ml-3">| Teclas: ⬅️ ➡️ para cambiar, [ESPACIO] para alternar código</span>
-      </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Dificultad</label>
+                        <select id="new-difficulty" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                            <option value="Fácil">Fácil</option>
+                            <option value="Medio">Medio</option>
+                            <option value="Difícil">Difícil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Categoría</label>
+                        <input type="text" id="new-category" placeholder="Ej: Arreglos, Strings" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
 
-      <!-- Next Button -->
-      <button 
-        id="btn-next" 
-        onclick="navigateExercise(1)" 
-        class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-500 to-emerald-600 hover:from-brand-400 hover:to-emerald-500 text-slate-950 rounded-xl font-black text-lg flex items-center justify-center gap-3 transition-all shadow-lg glow-accent disabled:opacity-30 disabled:cursor-not-allowed"
-      >
-        <span>Siguiente Ejercicio</span>
-        <i data-lucide="arrow-right" class="w-6 h-6"></i>
-      </button>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Enunciado</label>
+                    <textarea id="new-description" rows="3" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
 
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Entrada de Ejemplo</label>
+                    <textarea id="new-input" rows="2" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 code-font focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Salida Esperada</label>
+                    <textarea id="new-output" rows="2" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 code-font focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2.5 rounded-lg transition-colors shadow">
+                    Guardar Ejercicio
+                </button>
+            </form>
+        </div>
     </div>
 
-  </main>
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-8 right-8 z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3 bg-slate-900 text-slate-100 border border-brand-500/40 px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-lg">
-    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-400"></i>
-    <span id="toast-message" class="text-base font-bold">Notificación</span>
-  </div>
+    <script>
+        // Initial Dataset of Exercises: Módulo de Ejercicios - Listas + Bucles + Fundamentos
+        const defaultExercises = [
+            {
+                id: "ex-listas-1",
+                title: "1. Registrador y Buscador de Nombres",
+                difficulty: "Fácil",
+                category: "Listas y Búsqueda",
+                description: "Diseña un programa que permita registrar una lista de asistentes a un evento y luego verificar si alguien está en la lista.\n\nRequisitos:\n• Solicita al usuario cuántas personas desea registrar (N).\n• Mediante un bucle for, pide los N nombres y agrégalos a una lista utilizando .append().\n• Muestra la lista completa de asistentes e imprime cuántos asistentes hay en total usando len().\n• Pide al usuario que ingrese un nombre para buscar. Mediante una condición if / else y el operador in, muestra si la persona está o no registrada.",
+                input: "Cantidad de asistentes (N): 3\nNombre 1: Ana\nNombre 2: Carlos\nNombre 3: María\n\nBuscar nombre: Carlos",
+                output: "--- LISTA DE ASISTENTES ---\n['Ana', 'Carlos', 'María']\nTotal de asistentes: 3\n\n--- BÚSQUEDA ---\nBuscando a: Carlos\nResultado: Carlos SÍ está registrado en la lista del evento."
+            },
+            {
+                id: "ex-listas-2",
+                title: "2. Separador de Números Pares e Impares",
+                difficulty: "Fácil",
+                category: "Listas y Filtrado",
+                description: "Solicita números al usuario, clasifícalos en dos listas independientes y muestra estadísticas básicas.\n\nRequisitos:\n• Crea dos listas vacías: pares e impares.\n• Pide al usuario que ingrese 8 números enteros utilizando un bucle for.\n• Evalúa cada número con el operador módulo %:\n  - Si es par, agrégalo a la lista pares.\n  - Si es impar, agrégalo a la lista impares.\n• Al finalizar la lectura, imprime ambas listas y muestra cuál de las dos tiene más elementos.",
+                input: "Ingresa 8 números enteros:\n4, 7, 12, 15, 8, 21, 30, 9",
+                output: "--- RESULTADO DE CLASIFICACIÓN ---\nLista de Pares: [4, 12, 8, 30] (Total: 4)\nLista de Impares: [7, 15, 21, 9] (Total: 4)\n\nComparación: Ambas listas tienen la misma cantidad de elementos."
+            },
+            {
+                id: "ex-listas-3",
+                title: "3. Administrador de Tareas (Lista de Pendientes)",
+                difficulty: "Medio",
+                category: "Listas y Menú Interactivo",
+                description: "Crea un gestor de tareas sencillo por consola utilizando un bucle while interactivo y la estructura match / case.\n\nRequisitos:\n• Mantiene una lista tareas vacía dentro de un bucle while True.\n• Despliega el siguiente menú:\n  1 - Agregar tarea.\n  2 - Mostrar todas las tareas (con su número de posición/índice).\n  3 - Eliminar tarea por su posición.\n  4 - Salir.\n• Usa match / case para procesar la opción:\n  - Caso 1: Solicita el nombre de la tarea y agrégala con .append().\n  - Caso 2: Si la lista está vacía, indica que no hay tareas. Si no, usa un for con enumerate() o un contador para mostrar las tareas numeradas (ej. 1. Comprar leche).\n  - Caso 3: Pide el número de tarea a eliminar, valida que la posición exista y elimínala con .pop() o del.\n  - Caso 4: Finaliza el programa.",
+                input: "Opción: 1 -> Tarea: \"Comprar leche\"\nOpción: 1 -> Tarea: \"Estudiar Python\"\nOpción: 2\nOpción: 3 -> Número a eliminar: 1\nOpción: 2\nOpción: 4",
+                output: "--- TAREAS REGISTRADAS ---\n1. Comprar leche\n2. Estudiar Python\n\nEliminando tarea #1: Comprar leche\n\n--- TAREAS ACTUALIZADAS ---\n1. Estudiar Python\n\n¡Saliendo del administrador de tareas!"
+            },
+            {
+                id: "ex-listas-4",
+                title: "4. Filtro de Calificaciones y Calificación Media",
+                difficulty: "Medio",
+                category: "Listas y Estadística",
+                description: "Procesa un listado de notas de un grupo de estudiantes para calcular la media e identificar quiénes aprobaron.\n\nRequisitos:\n• Solicita al usuario que ingrese notas (float entre 0 y 100) una a una dentro de un bucle while. Para terminar la carga, el usuario debe ingresar -1.\n• Almacena cada nota válida en una lista calificaciones.\n• Calcula y muestra el promedio general de las notas de la lista.\n• Crea una nueva lista llamada aprobados que contenga solo las notas mayores o iguales a 60.\n• Imprime la cantidad de aprobados y la nota más alta registrada (usando la función max()).",
+                input: "Notas ingresadas: 85.0, 42.5, 90.0, 58.0, 76.5, -1",
+                output: "--- RESUMEN DE CALIFICACIONES ---\nLista de notas: [85.0, 42.5, 90.0, 58.0, 76.5]\nPromedio general: 70.4\n\n--- ESTUDIANTES APROBADOS ---\nNotas aprobatorias (>=60): [85.0, 90.0, 76.5]\nTotal aprobados: 3 de 5\nNota máxima alcanzada: 90.0"
+            },
+            {
+                id: "ex-listas-5",
+                title: "5. Limpieza de Datos (Eliminar Duplicados)",
+                difficulty: "Medio",
+                category: "Listas y Algoritmos",
+                description: "Desarrolla un algoritmo que reciba una lista de datos ingresados por el usuario y elimine los elementos repetidos sin alterar el orden original.\n\nRequisitos:\n• Pide al usuario que ingrese 10 palabras o elementos (pueden repetirse) y almacénalos en una lista llamada datos_crudos.\n• Crea una lista vacía llamada datos_limpios.\n• Recorre datos_crudos elemento por elemento con un bucle for.\n• Si el elemento no está en datos_limpios, agrégalo.\n• Muestra la lista original, la lista sin duplicados y cuántos elementos repetidos se eliminaron (len(datos_crudos) - len(datos_limpios)).",
+                input: "10 Elementos: [\"python\", \"java\", \"python\", \"c++\", \"java\", \"html\", \"css\", \"html\", \"python\", \"sql\"]",
+                output: "--- DEPURACIÓN DE DATOS ---\nLista original: ['python', 'java', 'python', 'c++', 'java', 'html', 'css', 'html', 'python', 'sql']\nLista limpia (sin duplicados): ['python', 'java', 'c++', 'html', 'css', 'sql']\n\nResumen: Se eliminaron 4 elementos duplicados."
+            },
+            {
+                id: "ex-listas-6",
+                title: "6. Ordenador y Buscador de Precios (Listas Paralelas)",
+                difficulty: "Medio",
+                category: "Listas Paralelas e Índices",
+                description: "Modela el catálogo de productos de una tienda usando dos listas sincronizadas (una para nombres y otra para precios).\n\nRequisitos:\n• Pide al usuario que registre 5 productos con su respectivo precio (float). Guarda los nombres en productos y los precios en precios.\n• Muestra la lista de productos junto con su precio formateado (ej. Teclado: $25.0).\n• Encuentra el producto más caro y el más barato sin usar funciones avanzadas de ordenamiento: localiza el índice del precio máximo y mínimo con precios.index(max(precios)) e imprime el nombre del producto correspondiente.\n• Solicita un presupuesto máximo al usuario y muestra únicamente los productos cuyo precio sea menor o igual a ese monto.",
+                input: "Productos y Precios:\n1. Laptop: 850.0\n2. Mouse: 15.0\n3. Teclado: 35.0\n4. Monitor: 200.0\n5. Auriculares: 45.0\n\nPresupuesto máximo: 100.0",
+                output: "--- CATÁLOGO DE PRODUCTOS ---\n• Laptop: $850.0\n• Mouse: $15.0\n• Teclado: $35.0\n• Monitor: $200.0\n• Auriculares: $45.0\n\nProducto más caro: Laptop ($850.0)\nProducto más barato: Mouse ($15.0)\n\n--- PRODUCTOS DENTRO DEL PRESUPUESTO ($100.0) ---\n• Mouse: $15.0\n• Teclado: $35.0\n• Auriculares: $45.0"
+            },
+            {
+                id: "ex-listas-7",
+                title: "7. Inversor de Listas y Verificador de Palíndromos",
+                difficulty: "Medio",
+                category: "Listas, Slicing y Cadenas",
+                description: "Determina si una palabra o frase ingresada por el usuario es un palíndromo (se lee igual de izquierda a derecha que de derecha a izquierda) convirtiéndola en una lista de caracteres.\n\nRequisitos:\n• Solicita al usuario una palabra o frase.\n• Elimina los espacios en blanco y convierte el texto a minúsculas.\n• Convierte la cadena limpia en una lista de caracteres individualmente (list(texto)).\n• Crea una copia invertida de la lista (puedes usar slicing lista[::-1] o el método .reverse()).\n• Compara mediante un if / else la lista original con la lista invertida.\n• Muestra un mensaje indicando si es o no un palíndromo, mostrando ambas listas en pantalla.",
+                input: "Frase ingresada: \"Anilina\"",
+                output: "--- ANÁLISIS PALÍNDROMO ---\nTexto original: \"Anilina\"\nLista de caracteres: ['a', 'n', 'i', 'l', 'i', 'n', 'a']\nLista invertida:    ['a', 'n', 'i', 'l', 'i', 'n', 'a']\n\nResultado: ¡Es un PALÍNDROMO!"
+            },
+            {
+                id: "ex-listas-8",
+                title: "8. Simulador de Carrito de Compras con Inventario",
+                difficulty: "Difícil",
+                category: "Listas y Control de Stock",
+                description: "Crea un sistema de ventas donde el usuario selecciona productos de una lista disponible para añadirlos a su carrito.\n\nRequisitos:\n• Define una lista preexistente con los productos disponibles en la tienda: inventario = [\"laptop\", \"mouse\", \"teclado\", \"monitor\", \"auriculares\"].\n• Inicializa una lista vacía llamada carrito.\n• En un bucle while:\n  - Muestra el inventario disponible.\n  - Pide al usuario que escriba el nombre del producto que desea comprar o \"pagar\" para finalizar.\n  - Si el producto ingresado está en inventario, agrégalo al carrito y remuévelo de inventario (para simular que se agota el stock).\n  - Si no está en inventario, muestra un mensaje de \"Producto no disponible o agotado\".\n• Al escribir \"pagar\", muestra el resumen final con los productos contenidos en el carrito.",
+                input: "Acciones:\n1. Comprar \"mouse\"\n2. Comprar \"monitor\"\n3. Comprar \"mouse\" (agotado)\n4. Escribir \"pagar\"",
+                output: "--- TIENDA EN LÍNEA ---\nAgregado 'mouse' al carrito.\nAgregado 'monitor' al carrito.\n'mouse' no disponible o agotado.\n\n--- RESUMEN DE COMPRA ---\nProductos comprados: ['mouse', 'monitor']\nTotal de artículos: 2\nInventario restante: ['laptop', 'teclado', 'auriculares']"
+            },
+            {
+                id: "ex-listas-9",
+                title: "9. Analizador de Frecuencia de Datos (Moda Básica)",
+                difficulty: "Difícil",
+                category: "Listas y Frecuencias (.count)",
+                description: "Identifica qué elemento se repite más veces dentro de un conjunto de datos ingresados por el usuario.\n\nRequisitos:\n• Pide al usuario que ingrese una serie de números enteros (mínimo 8 números).\n• Guarda los números en una lista numeros.\n• Encuentra cuál es el número que se repite con mayor frecuencia (la moda):\n  - Recorre la lista de elementos únicos.\n  - Usa el método .count() sobre la lista original para saber cuántas veces aparece cada número.\n  - Mantén el registro del número más frecuente y su cantidad de apariciones.\n• Muestra la lista completa, cuántas veces se repite el número más frecuente y cuál es dicho número.",
+                input: "Números ingresados: 5, 2, 8, 5, 3, 5, 2, 9, 5, 1",
+                output: "--- ANÁLISIS DE FRECUENCIAS ---\nLista de números: [5, 2, 8, 5, 3, 5, 2, 9, 5, 1]\nElementos únicos evaluados: [5, 2, 8, 3, 9, 1]\n\nNúmero más frecuente (Moda): 5\nFrecuencia de apariciones: 4 veces"
+            },
+            {
+                id: "ex-listas-10",
+                title: "10. Control de Acceso y Colas (Estructura tipo FIFO / LIFO)",
+                difficulty: "Difícil",
+                category: "Estructuras de Datos y Colas",
+                description: "Diseña un simulador de gestión de turnos para un banco o centro de atención utilizando listas.\n\nRequisitos:\n• Diseña un programa que mantenga una lista cola_clientes vacía.\n• Despliega un menú continuo (while) con las opciones:\n  1 - Llegada de cliente (añadir al final de la cola).\n  2 - Atender cliente (atender al primero de la fila y removerlo).\n  3 - Colar cliente prioritario (insertar al inicio de la fila usando .insert(0, cliente)).\n  4 - Mostrar estado actual de la cola.\n  5 - Cerrar sistema.\n• Procesa cada opción con match / case:\n  - En la opción 2 (Atender): Valida si hay clientes. Si los hay, elimina y muestra al cliente atendido usando .pop(0). Si la lista está vacía, avisa que no hay nadie en espera.\n  - En la opción 4 (Mostrar): Muestra el listado en orden de turno e indica el tiempo estimado de espera (asumiendo 3 minutos por cliente en la cola: len(cola_clientes) * 3).",
+                input: "Opción: 1 -> Cliente: \"Juan\"\nOpción: 1 -> Cliente: \"María\"\nOpción: 3 -> Cliente: \"Don Roberto (Prioritario)\"\nOpción: 4\nOpción: 2\nOpción: 5",
+                output: "--- SISTEMA DE GESTIÓN DE TURNOS ---\nCliente 'Juan' añadido a la fila.\nCliente 'María' añadida a la fila.\nCliente 'Don Roberto (Prioritario)' insertado al inicio.\n\n--- ESTADO DE LA COLA ---\nTurnos: ['Don Roberto (Prioritario)', 'Juan', 'María']\nPersonas en espera: 3\nTiempo estimado de espera: 9 minutos\n\nAtendiendo a: Don Roberto (Prioritario)\n\n¡Sistema de atención cerrado!"
+            }
+        ];
 
-  <!-- JavaScript Logic -->
-  <script>
-    const exercisesData = [
-      {
-        id: 1,
-        level: "Nivel 1: Fáciles",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "Calculadora de edad para mascotas",
-        topic: "Variables y Operadores Aritméticos",
-        concepts: [
-          "Variables",
-          "Tipos de datos",
-          "input()",
-          "Conversión de tipos int()",
-          "Operadores aritméticos (*)"
-        ],
-        description: "Pide al usuario el nombre de su mascota y su edad en años humanos (mediante input()).\n\nConvierte esa edad a un número entero, calcula la edad equivalente en \"años perro\" (multiplicando los años humanos por 7) e imprime un mensaje formateado especificando el nombre de la mascota y su edad calculada.",
-        sampleInput: "Nombre: Toby\nEdad humana: 4",
-        sampleOutput: "¡Toby tiene 28 años perro equivalentes!",
-        pythonCode: `# Ejercicio 1: Calculadora de edad para mascotas
+        // App State - Load default exercises or custom ones stored
+        let exercises = JSON.parse(localStorage.getItem('code_exercises_listas_v1')) || defaultExercises;
+        let currentIndex = 0;
+        let solvedMap = JSON.parse(localStorage.getItem('solved_exercises_listas')) || {};
+        let favoritesMap = JSON.parse(localStorage.getItem('favorite_exercises_listas')) || {};
 
-nombre = input("Ingresa el nombre de tu mascota: ")
-edad_humana = int(input("Ingresa su edad en años humanos: "))
+        // DOM Elements
+        const exTitle = document.getElementById('ex-title');
+        const exDescription = document.getElementById('ex-description');
+        const exInput = document.getElementById('ex-input');
+        const exOutput = document.getElementById('ex-output');
+        const difficultyBadge = document.getElementById('difficulty-badge');
+        const tagsContainer = document.getElementById('tags-container');
+        const counterBadge = document.getElementById('counter-badge');
+        const exerciseSelect = document.getElementById('exercise-select');
 
-# Cálculo multiplicando por 7
-edad_perro = edad_humana * 7
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
 
-print(f"¡{nombre} tiene {edad_perro} años perro equivalentes!")`,
-        explanation: "La función `input()` retorna texto (string). Debemos transformarla con `int()` antes de realizar la multiplicación aritmética `* 7`."
-      },
-      {
-        id: 2,
-        level: "Nivel 1: Fáciles",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "Evaluador de acceso y descuentos",
-        topic: "Condicionales y Operadores Lógicos",
-        concepts: [
-          "input()",
-          "Conversión de tipos",
-          "Operadores comparativos (<, <=, >)",
-          "Operadores lógicos (or, and)",
-          "Condicionales (if, elif, else)"
-        ],
-        description: "Solicita al usuario su edad y si cuenta con un carnet de estudiante (el usuario responderá \"si\" o \"no\").\n\n• Si es menor de 18 años o si responde que \"si\" tiene carnet, muestra un mensaje indicando que tiene un 50% de descuento.\n• Si tiene entre 18 y 60 años sin carnet, paga tarifa completa.\n• Si tiene más de 60 años, obtiene entrada gratuita.",
-        sampleInput: "Edad: 20\nCarnet: si",
-        sampleOutput: "Tienes un 50% de descuento en tu entrada.",
-        pythonCode: `# Ejercicio 2: Evaluador de acceso y descuentos
+        const copyInputBtn = document.getElementById('copy-input-btn');
+        const copyOutputBtn = document.getElementById('copy-output-btn');
 
-edad = int(input("Ingresa tu edad: "))
-tiene_carnet = input("¿Tienes carnet de estudiante? (si/no): ").strip().lower()
+        const toggleSolvedBtn = document.getElementById('toggle-solved-btn');
+        const solvedText = document.getElementById('solved-text');
+        const toggleFavBtn = document.getElementById('toggle-favorite-btn');
 
-if edad < 18 or tiene_carnet == "si":
-    print("Tienes un 50% de descuento en tu entrada.")
-elif 18 <= edad <= 60:
-    print("Debes pagar tarifa completa.")
-else:
-    print("¡Obtienes entrada gratuita por ser adulto mayor (>60 años)!")`,
-        explanation: "El operador `or` valida si se cumple al menos una de las dos condiciones requeridas para el beneficio del descuento."
-      },
-      {
-        id: 3,
-        level: "Nivel 1: Fáciles",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "Contador de números pares e impares",
-        topic: "Bucles for/while y Módulo %",
-        concepts: [
-          "Bucles (for o while)",
-          "range(inicio, fin)",
-          "Operadores aritméticos (módulo %)",
-          "Condicionales (if/else)",
-          "Variables acumuladoras / Contadores"
-        ],
-        description: "Pide al usuario un número entero positivo N.\n\nUtiliza un bucle para recorrer desde el 1 hasta ese número N. Durante el recorrido, imprime cada número indicando si es \"Par\" o \"Impar\". Al finalizar el bucle, muestra cuántos pares e impares se encontraron en total.",
-        sampleInput: "Número N: 5",
-        sampleOutput: "1 -> Impar\n2 -> Par\n3 -> Impar\n4 -> Par\n5 -> Impar\n\nTotal pares: 2 | Total impares: 3",
-        pythonCode: `# Ejercicio 3: Contador de números pares e impares
+        // Modals
+        const gridViewBtn = document.getElementById('grid-view-btn');
+        const listModal = document.getElementById('list-modal');
+        const closeListModal = document.getElementById('close-list-modal');
+        const exerciseGridList = document.getElementById('exercise-grid-list');
+        const searchInput = document.getElementById('search-exercise-input');
 
-n = int(input("Ingresa un número entero positivo: "))
+        const addCustomBtn = document.getElementById('add-custom-btn');
+        const addModal = document.getElementById('add-modal');
+        const closeAddModal = document.getElementById('close-add-modal');
+        const addForm = document.getElementById('add-exercise-form');
 
-total_pares = 0
-total_impares = 0
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
 
-for i in range(1, n + 1):
-    if i % 2 == 0:
-        print(f"{i} -> Par")
-        total_pares += 1
-    else:
-        print(f"{i} -> Impar")
-        total_impares += 1
+        // Core Render Function
+        function renderExercise() {
+            const current = exercises[currentIndex];
+            if (!current) return;
 
-print(f"\\nResumen final:")
-print(f"Total de pares: {total_pares}")
-print(f"Total de impares: {total_impares}")`,
-        explanation: "El operador módulo `%` calcula el residuo. Si `i % 2 == 0`, el número es par. Acumulamos las cantidades con contadores incrementales `+= 1`."
-      },
-      {
-        id: 4,
-        level: "Nivel 2: Intermedios",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "Registro de notas de un estudiante",
-        topic: "Listas, Bucles y Métodos de Agregación",
-        concepts: [
-          "Estructura de Listas []",
-          "Métodos de listas: append()",
-          "len() y sum()",
-          "Bucles for",
-          "Operadores aritméticos (/)"
-        ],
-        description: "Crea una lista vacía para almacenar calificaciones. Mediante un bucle, pide al usuario que ingrese 4 notas (convertidas a decimales/float). Agrega cada nota a la lista.\n\nAl finalizar la lectura, calcula el promedio sumando los elementos de la lista y dividiéndolos entre la cantidad total de notas, e imprime si el alumno aprobó (promedio >= 10) o reprobó.",
-        sampleInput: "Nota 1: 14\nNota 2: 11\nNota 3: 16\nNota 4: 9",
-        sampleOutput: "Notas: [14.0, 11.0, 16.0, 9.0]\nPromedio: 12.50\nEstado: ¡El alumno ha APROBADO!",
-        pythonCode: `# Ejercicio 4: Registro de notas de un estudiante
+            // Basic Info
+            exTitle.textContent = current.title;
+            exDescription.textContent = current.description;
+            exInput.textContent = current.input;
+            exOutput.textContent = current.output;
 
-calificaciones = []
+            // Difficulty styling
+            let diffStyle = "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300";
+            if (current.difficulty === "Medio") {
+                diffStyle = "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300";
+            } else if (current.difficulty === "Difícil") {
+                diffStyle = "bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-300";
+            }
+            difficultyBadge.className = `px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${diffStyle}`;
+            difficultyBadge.textContent = current.difficulty;
 
-for i in range(1, 5):
-    nota = float(input(f"Ingresa la nota #{i}: "))
-    calificaciones.append(nota)
+            // Tags
+            tagsContainer.innerHTML = `
+                <span class="px-2.5 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-md flex items-center gap-1">
+                    <i class="fa-solid fa-tag text-[10px] text-sky-500"></i> ${current.category || 'General'}
+                </span>
+            `;
 
-promedio = sum(calificaciones) / len(calificaciones)
+            // Counter Badge
+            counterBadge.textContent = `${currentIndex + 1} / ${exercises.length}`;
 
-print(f"\\nNotas ingresadas: {calificaciones}")
-print(f"Promedio obtenido: {promedio:.2f}")
+            // Buttons state
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === exercises.length - 1;
 
-if promedio >= 10:
-    print("Estado: ¡El alumno ha APROBADO!")
-else:
-    print("Estado: El alumno ha REPROBADO.")`,
-        explanation: "`.append()` agrega nuevos elementos al final de la lista, `sum()` suma todos los valores numéricos y `len()` retorna la cantidad total."
-      },
-      {
-        id: 5,
-        level: "Nivel 2: Intermedios",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "Verificador de elementos en tuplas inmutables",
-        topic: "Tuplas inmutables y Operador in",
-        concepts: [
-          "Tuplas inmutables ()",
-          "Operadores de pertenencia (in)",
-          "Condicionales (if / else)",
-          "Métodos de strings: lower(), strip()"
-        ],
-        description: "Define una tupla fija con los días laborables de la semana: (\"lunes\", \"martes\", \"miercoles\", \"jueves\", \"viernes\").\n\nSolicita al usuario que ingrese un día. Convierte el texto ingresado a minúsculas y verifica si ese día se encuentra dentro de la tupla. Imprime un mensaje confirmando si es un día laboral o un fin de semana.",
-        sampleInput: "Día: Sabado",
-        sampleOutput: "El día 'sabado' no es laborable. ¡Es fin de semana o descanso!",
-        pythonCode: `# Ejercicio 5: Verificador en tuplas inmutables
+            // Select Dropdown Sync
+            populateSelectOptions();
+            exerciseSelect.value = currentIndex;
 
-dias_laborables = ("lunes", "martes", "miercoles", "jueves", "viernes")
+            // Solved Status UI
+            updateSolvedUI(current.id);
 
-dia_ingresado = input("Ingresa un día de la semana: ").strip().lower()
-
-if dia_ingresado in dias_laborables:
-    print(f"El día '{dia_ingresado}' es un día laboral.")
-else:
-    print(f"El día '{dia_ingresado}' no es laborable. ¡Es fin de semana o descanso!")`,
-        explanation: "Las tuplas se declaran con paréntesis `()` y son inmutables. El operador de pertenencia `in` revisa eficientemente si el elemento existe en ella."
-      },
-      {
-        id: 6,
-        level: "Nivel 2: Intermedios",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "Limpiador y formateador de nombres",
-        topic: "Manipulación Avanzada de Strings",
-        concepts: [
-          "strip() (eliminar espacios en extremos)",
-          "title() (formato mayúsculas iniciales)",
-          "replace() (sustituir caracteres)",
-          "split() y join()",
-          "Manejo de variables"
-        ],
-        description: "Un usuario ingresa su nombre completo con espacios extras al inicio/final y en minúsculas dispares (por ejemplo: \"   juan CARLOS peRez  \").\n\nUtiliza métodos de cadenas para eliminar los espacios sobrantes, corregir el formato para que cada nombre empiece con mayúscula y reemplazar cualquier espacio entre palabras por un guion bajo para generar un nombre de usuario válido.",
-        sampleInput: "Texto: '   juan CARLOS peRez  '",
-        sampleOutput: "Nombre corregido: Juan Carlos Perez\nNombre de usuario: Juan_Carlos_Perez",
-        pythonCode: `# Ejercicio 6: Limpiador y formateador de nombres
-
-entrada_usuario = input("Ingresa tu nombre completo con espacios irregulares: ")
-
-# 1. Eliminar espacios en los extremos y normalizar palabras
-palabras = entrada_usuario.strip().split()
-nombre_limpio = " ".join(palabras)
-
-# 2. Formato de título
-nombre_formateado = nombre_limpio.title()
-
-# 3. Reemplazar espacios por guiones bajos para el username
-nombre_usuario = nombre_formateado.replace(" ", "_")
-
-print(f"Nombre corregido: {nombre_formateado}")
-print(f"Nombre de usuario: {nombre_usuario}")`,
-        explanation: "`.strip()` remueve espacios externos, `.title()` capitaliza cada palabra y `.replace(' ', '_')` sustituye caracteres en cadenas."
-      },
-      {
-        id: 7,
-        level: "Nivel 3: Avanzados",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "Gestor de inventario sencillo",
-        topic: "Diccionarios y Búsqueda por Clave",
-        concepts: [
-          "Diccionarios {clave: valor}",
-          "Acceso a claves dict[key]",
-          "Bucle for con .items()",
-          "Condicionales de pertenencia (in sobre diccionarios)"
-        ],
-        description: "Crea un diccionario con productos y sus precios actuales (ej. {\"manzana\": 1.5, \"pan\": 0.8, \"leche\": 1.2}).\n\nMuestra la lista de productos disponibles al usuario recorriendo el diccionario. Pide al usuario el nombre de un producto e indica su precio. Si el producto no existe en el diccionario, muestra un mensaje avisando que no está disponible.",
-        sampleInput: "Producto a consultar: leche",
-        sampleOutput: "--- PRODUCTOS EN TIENDA ---\n• Manzana: $1.50\n• Pan: $0.80\n• Leche: $1.20\n\nEl precio de 'leche' es: $1.20",
-        pythonCode: `# Ejercicio 7: Gestor de inventario sencillo
-
-inventario = {
-    "manzana": 1.5,
-    "pan": 0.8,
-    "leche": 1.2,
-    "queso": 2.5,
-    "cafe": 3.0
-}
-
-print("--- PRODUCTOS EN TIENDA ---")
-for producto, precio in inventario.items():
-    print(f"• {producto.capitalize()}: \${precio:.2f}")
-
-busqueda = input("\\nIngresa el nombre del producto a consultar: ").strip().lower()
-
-if busqueda in inventario:
-    print(f"El precio de '{busqueda}' es: \${inventario[busqueda]:.2f}")
-else:
-    print(f"Aviso: El producto '{busqueda}' no se encuentra disponible.")`,
-        explanation: "Los diccionarios almacenan pares `clave: valor`. Con `.items()` iteramos ambos simultáneamente y con `in` verificamos la existencia de la clave."
-      },
-      {
-        id: 8,
-        level: "Nivel 3: Avanzados",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "Filtrado de palabras clave",
-        topic: "Filtrado de Listas y Métodos de String",
-        concepts: [
-          "Listas y creación de listas vacías",
-          "Métodos de listas: append()",
-          "Métodos de strings: startswith(), upper(), lower()",
-          "Bucles de iteración for"
-        ],
-        description: "Dada una lista de palabras precargadas (ej. [\"python\", \"programacion\", \"pantalla\", \"codigo\", \"proceso\"]), crea una nueva lista vacía.\n\nRecorre la lista original e inserta en la nueva lista solo las palabras que comiencen por la letra \"p\" (sin importar mayúsculas/minúsculas). Muestra la lista final convertida totalmente a mayúsculas.",
-        sampleInput: "Lista: ['python', 'servidor', 'programacion', 'pantalla', 'codigo', 'proceso']",
-        sampleOutput: "Palabras que comienzan con 'P' (en mayúsculas):\n['PYTHON', 'PROGRAMACION', 'PANTALLA', 'PROCESO']",
-        pythonCode: `# Ejercicio 8: Filtrado de palabras clave
-
-palabras = ["python", "servidor", "programacion", "pantalla", "codigo", "proceso", "algoritmo", "Proyecto"]
-palabras_filtradas = []
-
-for palabra in palabras:
-    # Verificamos si empieza con 'p' ignorando mayúsculas
-    if palabra.lower().startswith("p"):
-        palabras_filtradas.append(palabra.upper())
-
-print("Lista original:")
-print(palabras)
-print("\\nPalabras que comienzan con 'P' (en mayúsculas):")
-print(palabras_filtradas)`,
-        explanation: "`.startswith('p')` verifica el carácter inicial de cada texto y `.upper()` transforma la cadena a mayúsculas antes de guardarla con `.append()`."
-      },
-      {
-        id: 9,
-        level: "Nivel 3: Avanzados",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "Conversor de temperatura estructurado",
-        topic: "Funciones modulares, parámetros y return",
-        concepts: [
-          "Definición de funciones: def nombre(params):",
-          "Instrucción de retorno: return",
-          "Condicionales (if, elif, else)",
-          "Conversión de tipos (float(), upper())",
-          "Fórmulas matemáticas aplicadas"
-        ],
-        description: "Define una función llamada convertir_temperatura(grados, escala) que reciba un valor numérico y una letra (\"C\" para Celsius o \"F\" para Fahrenheit).\n\n• Si la escala es \"C\", debe convertir esos grados a Fahrenheit mediante la fórmula F = (C * 9/5) + 32.\n• Si es \"F\", los convierte a Celsius con C = (F - 32) * 5/9.\n\nRetorna el valor calculado y pruébala solicitando los datos al usuario desde el programa principal.",
-        sampleInput: "Grados: 100\nEscala: C",
-        sampleOutput: "100.00°C equivalen a 212.00°F",
-        pythonCode: `# Ejercicio 9: Conversor de temperatura estructurado
-
-def convertir_temperatura(grados, escala):
-    escala = escala.upper()
-    if escala == "C":
-        return (grados * 9/5) + 32
-    elif escala == "F":
-        return (grados - 32) * 5/9
-    else:
-        return None
-
-# Programa Principal
-g = float(input("Ingresa los grados: "))
-esc = input("Ingresa la escala actual ('C' para Celsius / 'F' para Fahrenheit): ").strip()
-
-resultado = convertir_temperatura(g, esc)
-
-if resultado is not None:
-    destino = "°F" if esc.upper() == "C" else "°C"
-    print(f"\\n{g:.2f}°{esc.upper()} equivalen a {resultado:.2f}{destino}")
-else:
-    print("\\nError: Escala no reconocida. Usa 'C' o 'F'.")`,
-        explanation: "La palabra reservada `def` define funciones modulares y `return` devuelve el valor calculado hacia la llamada del programa principal."
-      },
-      {
-        id: 10,
-        level: "Nivel 4: Desafío Integrador",
-        badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-        title: "Administrador de perfil de usuario (Sistema Integrado)",
-        topic: "Funciones, Diccionarios y Listas",
-        concepts: [
-          "Funciones con múltiples parámetros",
-          "Diccionarios anidados",
-          "Métodos de strings: title(), split(), strip()",
-          "Listas y List Comprehension",
-          "Bucles para impresión formateada"
-        ],
-        description: "Crea una función llamada crear_perfil(nombre, edad, habilidades) que reciba el nombre (string), la edad (entero) y una lista de habilidades (strings separadas por comas).\n\n1. La función debe limpiar el nombre (quitar espacios sobrantes y colocar formato de título).\n2. Debe transformar la lista de habilidades separando el texto por comas y limpiando cada elemento.\n3. Debe construir y retornar un diccionario con la estructura: {\"nombre\": ..., \"edad\": ..., \"habilidades\": [...]}.\n\nEn el flujo principal del programa, solicita estos datos al usuario, llama a la función e imprime el perfil resultante de forma ordenada.",
-        sampleInput: "Nombre: '  ana sofia  '\nEdad: 25\nHabilidades: 'python, git, sql, django'",
-        sampleOutput: "===================================\n🚀 PERFIL DE USUARIO REGISTRADO\n===================================\nNombre: Ana Sofia\nEdad:   25 años\nHabilidades (4):\n  • Python\n  • Git\n  • Sql\n  • Django\n===================================",
-        pythonCode: `# Ejercicio 10: Administrador de perfil de usuario (Sistema Integrado)
-
-def crear_perfil(nombre, edad, habilidades_raw):
-    # 1. Limpieza de nombre
-    nombre_limpio = " ".join(nombre.strip().split()).title()
-    
-    # 2. Transformación y limpieza de habilidades
-    lista_habs = [h.strip().title() for h in habilidades_raw.split(",") if h.strip()]
-    
-    # 3. Retorno de diccionario estructurado
-    return {
-        "nombre": nombre_limpio,
-        "edad": int(edad),
-        "habilidades": lista_habs
-    }
-
-# Flujo Principal
-nom = input("Ingresa tu nombre completo: ")
-edad = int(input("Ingresa tu edad: "))
-habs = input("Ingresa tus habilidades separadas por comas: ")
-
-perfil = crear_perfil(nom, edad, habs)
-
-print("\\n" + "="*35)
-print("🚀 PERFIL DE USUARIO REGISTRADO")
-print("="*35)
-print(f"Nombre: {perfil['nombre']}")
-print(f"Edad:   {perfil['edad']} años")
-print(f"Habilidades ({len(perfil['habilidades'])}):")
-for habilidad in perfil["habilidades"]:
-    print(f"  • {habilidad}")
-print("="*35)`,
-        explanation: "Integra funciones que reciben parámetros, normalizan cadenas, procesan listas dinámicas y devuelven diccionarios estructurados."
-      }
-    ];
-
-    let currentExerciseId = 1;
-    let currentMode = 'enunciado'; // 'enunciado' | 'codigo'
-    let pyodideInstance = null;
-    let isTerminalOpen = false;
-
-    // Initialize UI on load
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      renderQuickNumberBar();
-      loadExercise(1);
-      setupKeyboardShortcuts();
-    });
-
-    function renderQuickNumberBar() {
-      const bar = document.getElementById('quick-num-bar');
-      bar.innerHTML = exercisesData.map(ex => {
-        const isActive = ex.id === currentExerciseId;
-        return `
-          <button 
-            onclick="loadExercise(${ex.id})" 
-            class="w-8 h-8 md:w-10 md:h-10 rounded-xl font-black text-xs md:text-sm font-mono transition-all flex items-center justify-center ${
-              isActive 
-                ? 'bg-brand-500 text-slate-950 shadow-md shadow-brand-500/30' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }"
-            title="Ejercicio ${ex.id}"
-          >
-            ${ex.id < 10 ? '0' + ex.id : ex.id}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function loadExercise(id) {
-      currentExerciseId = id;
-      const ex = exercisesData.find(e => e.id === id);
-      if (!ex) return;
-
-      renderQuickNumberBar();
-
-      // Update Header & Badge
-      const badge = document.getElementById('ex-level-badge');
-      badge.textContent = ex.level;
-      badge.className = `px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-extrabold uppercase tracking-wider ${ex.badgeColor}`;
-      document.getElementById('ex-topic-badge').textContent = ex.topic;
-      document.getElementById('ex-title').textContent = `${ex.id}. ${ex.title}`;
-
-      // Update View 1: Concepts Chips (Herramientas & Pistas)
-      const conceptsContainer = document.getElementById('ex-concepts-chips');
-      if (conceptsContainer && ex.concepts) {
-        conceptsContainer.innerHTML = ex.concepts.map(concept => `
-          <span class="px-3.5 py-1.5 rounded-xl bg-slate-900/90 text-brand-300 border border-brand-500/30 text-xs md:text-sm font-mono font-semibold flex items-center gap-1.5 shadow-sm">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
-            ${concept}
-          </span>
-        `).join('');
-      }
-
-      // Update View 1 (Enunciado)
-      document.getElementById('ex-description').innerHTML = escapeAndFormatNewlines(ex.description);
-      document.getElementById('ex-sample-input').textContent = ex.sampleInput;
-      document.getElementById('ex-sample-output').textContent = ex.sampleOutput;
-
-      // Update View 2 (Código)
-      const codeBlock = document.getElementById('ex-code-block');
-      codeBlock.textContent = ex.pythonCode;
-      Prism.highlightElement(codeBlock);
-      document.getElementById('ex-explanation').textContent = ex.explanation;
-
-      // Update Bottom Nav
-      document.getElementById('nav-counter').textContent = `${ex.id < 10 ? '0' + ex.id : ex.id} / ${exercisesData.length}`;
-      document.getElementById('btn-prev').disabled = ex.id === 1;
-      document.getElementById('btn-next').disabled = ex.id === exercisesData.length;
-
-      // Reset mode to enunciado when changing exercise
-      setMode('enunciado');
-      lucide.createIcons();
-    }
-
-    function setMode(mode) {
-      currentMode = mode;
-
-      const btnEnunciado = document.getElementById('btn-mode-enunciado');
-      const btnCodigo = document.getElementById('btn-mode-codigo');
-      const viewEnunciado = document.getElementById('view-enunciado');
-      const viewCodigo = document.getElementById('view-codigo');
-
-      if (mode === 'enunciado') {
-        btnEnunciado.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 bg-brand-500 text-slate-950 shadow-lg glow-accent";
-        btnCodigo.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 text-slate-400 hover:text-white hover:bg-slate-800/60";
-        viewEnunciado.classList.remove('hidden');
-        viewCodigo.classList.add('hidden');
-      } else {
-        btnCodigo.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 bg-brand-500 text-slate-950 shadow-lg glow-accent";
-        btnEnunciado.className = "flex-1 md:flex-none px-6 py-3.5 rounded-xl text-base md:text-lg font-black transition-all flex items-center justify-center gap-3 text-slate-400 hover:text-white hover:bg-slate-800/60";
-        viewCodigo.classList.remove('hidden');
-        viewEnunciado.classList.add('hidden');
-      }
-    }
-
-    function toggleMode() {
-      setMode(currentMode === 'enunciado' ? 'codigo' : 'enunciado');
-    }
-
-    function navigateExercise(delta) {
-      const newId = currentExerciseId + delta;
-      if (newId >= 1 && newId <= exercisesData.length) {
-        loadExercise(newId);
-      }
-    }
-
-    function setupKeyboardShortcuts() {
-      document.addEventListener('keydown', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-        if (e.key === 'ArrowLeft') {
-          navigateExercise(-1);
-        } else if (e.key === 'ArrowRight') {
-          navigateExercise(1);
-        } else if (e.key === ' ' || e.code === 'Space' || e.key.toLowerCase() === 't') {
-          e.preventDefault();
-          toggleMode();
-        } else if (e.key.toLowerCase() === 'f') {
-          toggleFullscreen();
+            // Favorite Status UI
+            updateFavoriteUI(current.id);
         }
-      });
-    }
 
-    async function runPythonCode() {
-      const ex = exercisesData.find(e => e.id === currentExerciseId);
-      if (!ex) return;
-
-      if (!isTerminalOpen) {
-        toggleTerminalVisibility();
-      }
-
-      const term = document.getElementById('terminal-output');
-      term.innerHTML = "⏳ Cargando entorno de Python en el navegador...\n";
-
-      if (!pyodideInstance) {
-        try {
-          pyodideInstance = await loadPyodide({
-            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/"
-          });
-        } catch (err) {
-          term.innerHTML = "❌ Error al cargar el motor de Python.\n";
-          return;
+        function populateSelectOptions() {
+            exerciseSelect.innerHTML = '';
+            exercises.forEach((ex, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                const isDone = solvedMap[ex.id] ? '✓ ' : '';
+                opt.textContent = `${isDone}${idx + 1}. ${ex.title.replace(/^\d+\.\s*/, '')}`;
+                exerciseSelect.appendChild(opt);
+            });
         }
-      }
 
-      term.innerHTML = "▶️ Ejecutando script...\n----------------------------------------\n";
+        function updateSolvedUI(id) {
+            const isSolved = !!solvedMap[id];
+            if (isSolved) {
+                toggleSolvedBtn.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl bg-emerald-500 text-white shadow-sm transition-all";
+                toggleSolvedBtn.querySelector('i').className = "fa-solid fa-circle-check text-base text-white";
+                solvedText.textContent = "Resuelto";
+            } else {
+                toggleSolvedBtn.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all";
+                toggleSolvedBtn.querySelector('i').className = "fa-regular fa-circle-check text-base text-slate-400";
+                solvedText.textContent = "Sin Resolver";
+            }
+        }
 
-      try {
-        let outputBuffer = "";
+        function updateFavoriteUI(id) {
+            const isFav = !!favoritesMap[id];
+            if (isFav) {
+                toggleFavBtn.innerHTML = `<i class="fa-solid fa-star text-lg text-amber-500"></i>`;
+            } else {
+                toggleFavBtn.innerHTML = `<i class="fa-regular fa-star text-lg text-slate-400"></i>`;
+            }
+        }
 
-        pyodideInstance.setStdout({
-          batched: (str) => {
-            outputBuffer += str + "\n";
-          }
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            let bg = 'bg-slate-800 text-white';
+            let icon = 'fa-circle-info text-sky-400';
+
+            if (type === 'success') {
+                bg = 'bg-emerald-900 text-emerald-100 border border-emerald-700';
+                icon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'error') {
+                bg = 'bg-rose-900 text-rose-100 border border-rose-700';
+                icon = 'fa-triangle-exclamation text-rose-400';
+            }
+
+            toast.className = `${bg} px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-xs sm:text-sm font-medium transition-all transform translate-y-2 opacity-0 duration-200 z-50`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i><span>${message}</span>`;
+
+            const container = document.getElementById('toast-container');
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Copy Clipboard Helper using standard execCommand fallback for iFrame compatibility
+        function copyToClipboard(text, label) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showToast(`${label} copiada al portapapeles`, 'success');
+            } catch (err) {
+                showToast('Error al copiar al portapapeles', 'error');
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderExercise();
+            }
         });
 
-        pyodideInstance.setStdin({
-          stdin: () => {
-            const result = window.prompt("Entrada requerida por input():");
-            term.innerHTML += `> Ingresado: ${result || ''}\n`;
-            return (result || "") + "\n";
-          }
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < exercises.length - 1) {
+                currentIndex++;
+                renderExercise();
+            }
         });
 
-        await pyodideInstance.runPythonAsync(ex.pythonCode);
+        exerciseSelect.addEventListener('change', (e) => {
+            currentIndex = parseInt(e.target.value);
+            renderExercise();
+        });
 
-        term.innerHTML += outputBuffer + "\n----------------------------------------\n✅ Ejecución finalizada correctamente.";
-      } catch (error) {
-        term.innerHTML += `\n❌ Error de Ejecución:\n${error.message}`;
-      }
-    }
+        copyInputBtn.addEventListener('click', () => {
+            copyToClipboard(exInput.textContent, 'Entrada de ejemplo');
+        });
 
-    function toggleTerminalVisibility() {
-      isTerminalOpen = !isTerminalOpen;
-      const termContainer = document.getElementById('terminal-container');
-      const chevron = document.getElementById('term-chevron');
+        copyOutputBtn.addEventListener('click', () => {
+            copyToClipboard(exOutput.textContent, 'Salida esperada');
+        });
 
-      if (isTerminalOpen) {
-        termContainer.classList.remove('hidden');
-        chevron.setAttribute('data-lucide', 'chevron-up');
-      } else {
-        termContainer.classList.add('hidden');
-        chevron.setAttribute('data-lucide', 'chevron-down');
-      }
-      lucide.createIcons();
-    }
+        toggleSolvedBtn.addEventListener('click', () => {
+            const currentId = exercises[currentIndex].id;
+            solvedMap[currentId] = !solvedMap[currentId];
+            localStorage.setItem('solved_exercises_fundamentos', JSON.stringify(solvedMap));
+            updateSolvedUI(currentId);
+            populateSelectOptions();
+            showToast(solvedMap[currentId] ? 'Marcado como Resuelto' : 'Marcado como Sin Resolver');
+        });
 
-    function clearTerminal() {
-      const term = document.getElementById('terminal-output');
-      if (term) term.innerHTML = "Consola limpia.";
-    }
+        toggleFavBtn.addEventListener('click', () => {
+            const currentId = exercises[currentIndex].id;
+            favoritesMap[currentId] = !favoritesMap[currentId];
+            localStorage.setItem('favorite_exercises_fundamentos', JSON.stringify(favoritesMap));
+            updateFavoriteUI(currentId);
+            showToast(favoritesMap[currentId] ? 'Agregado a Favoritos' : 'Eliminado de Favoritos');
+        });
 
-    function copyCurrentCode() {
-      const ex = exercisesData.find(e => e.id === currentExerciseId);
-      if (ex) {
-        navigator.clipboard.writeText(ex.pythonCode);
-        showToast("Código copiado al portapapeles");
-      }
-    }
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            // Prevent if user is typing in input or textarea
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                return;
+            }
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                renderExercise();
+            } else if (e.key === 'ArrowRight' && currentIndex < exercises.length - 1) {
+                currentIndex++;
+                renderExercise();
+            }
+        });
 
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
+        // Grid View Modal
+        gridViewBtn.addEventListener('click', () => {
+            renderModalGrid();
+            listModal.classList.remove('hidden');
+        });
+
+        closeListModal.addEventListener('click', () => {
+            listModal.classList.add('hidden');
+        });
+
+        function renderModalGrid(searchTerm = '') {
+            exerciseGridList.innerHTML = '';
+            const filtered = exercises.filter(ex => 
+                ex.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                ex.category.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                exerciseGridList.innerHTML = `<p class="text-center py-6 text-slate-400 text-sm">No se encontraron ejercicios con ese criterio.</p>`;
+                return;
+            }
+
+            filtered.forEach((ex) => {
+                const originalIndex = exercises.findIndex(e => e.id === ex.id);
+                const isSolved = solvedMap[ex.id];
+                const isFav = favoritesMap[ex.id];
+
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-xl border ${originalIndex === currentIndex ? 'border-sky-500 bg-sky-50/50 dark:bg-sky-950/20' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'} hover:border-sky-400 transition-all cursor-pointer flex items-center justify-between gap-3`;
+                
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 truncate">
+                        <span class="w-6 text-center text-xs font-bold text-slate-400">${originalIndex + 1}</span>
+                        <div class="truncate">
+                            <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate flex items-center gap-2">
+                                ${ex.title.replace(/^\d+\.\s*/, '')}
+                                ${isFav ? '<i class="fa-solid fa-star text-amber-500 text-xs"></i>' : ''}
+                            </h4>
+                            <span class="text-xs text-slate-400">${ex.category} • ${ex.difficulty}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        ${isSolved ? '<span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 font-medium">Resuelto</span>' : ''}
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </div>
+                `;
+
+                item.addEventListener('click', () => {
+                    currentIndex = originalIndex;
+                    renderExercise();
+                    listModal.classList.add('hidden');
+                });
+
+                exerciseGridList.appendChild(item);
+            });
         }
-      }
-    }
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-message');
-      
-      toastMsg.textContent = message;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
+        searchInput.addEventListener('input', (e) => {
+            renderModalGrid(e.target.value);
+        });
 
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2500);
-    }
+        // Add Custom Exercise
+        addCustomBtn.addEventListener('click', () => {
+            addModal.classList.remove('hidden');
+        });
 
-    function escapeAndFormatNewlines(str) {
-      return str.replace(/\n/g, '<br>');
-    }
-  </script>
+        closeAddModal.addEventListener('click', () => {
+            addModal.classList.add('hidden');
+        });
+
+        addForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newEx = {
+                id: 'custom-' + Date.now(),
+                title: `${exercises.length + 1}. ${document.getElementById('new-title').value}`,
+                difficulty: document.getElementById('new-difficulty').value,
+                category: document.getElementById('new-category').value || 'Personalizado',
+                description: document.getElementById('new-description').value,
+                input: document.getElementById('new-input').value,
+                output: document.getElementById('new-output').value
+            };
+
+            exercises.push(newEx);
+            localStorage.setItem('code_exercises_listas_v1', JSON.stringify(exercises));
+            
+            addModal.classList.add('hidden');
+            addForm.reset();
+            
+            currentIndex = exercises.length - 1;
+            renderExercise();
+            showToast('¡Nuevo ejercicio agregado con éxito!', 'success');
+        });
+
+        // Theme Mode Setup
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            darkIcon.classList.remove('hidden');
+            lightIcon.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            lightIcon.classList.remove('hidden');
+            darkIcon.classList.add('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // App Initialization
+        window.onload = function() {
+            renderExercise();
+        };
+    </script>
 </body>
 </html>
