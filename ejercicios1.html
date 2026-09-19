@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plus58 | Modo TV - Programación Básica con Python</title>
+  <title>Plus58 | Modo TV - Módulo Fundamentos de Python</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -74,7 +74,7 @@
     }
 
     .tv-code-font {
-      font-size: 1.35rem !important;
+      font-size: 1.25rem !important;
       line-height: 1.8 !important;
     }
 
@@ -104,7 +104,7 @@
               Modo TV / Aula
             </span>
           </div>
-          <p class="text-slate-400 text-xs md:text-sm font-medium">Programación Básica con Python</p>
+          <p class="text-slate-400 text-xs md:text-sm font-medium">Módulo: Fundamentos de Python</p>
         </div>
       </div>
 
@@ -134,14 +134,14 @@
       <div>
         <div class="flex items-center gap-3 mb-1">
           <span id="ex-level-badge" class="px-3 py-1 rounded-lg text-xs md:text-sm font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-            Nivel 1: Fáciles
+            Nivel 1: Fundamentos
           </span>
           <span id="ex-topic-badge" class="text-slate-400 text-sm md:text-base font-semibold">
-            Lógica Básica
+            Variables y Conversión de Tipos
           </span>
         </div>
         <h2 id="ex-title" class="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
-          1. El Descuento por Cantidad
+          1. Ficha de Registro de Usuario
         </h2>
       </div>
 
@@ -179,25 +179,25 @@
             <i data-lucide="book-open" class="w-5 h-5"></i>
             Instrucciones del Ejercicio
           </h3>
-          <p id="ex-description" class="text-slate-100 text-2xl md:text-3xl lg:text-4xl leading-relaxed font-semibold">
+          <div id="ex-description" class="text-slate-100 text-xl md:text-2xl lg:text-3xl leading-relaxed font-semibold space-y-4">
             <!-- Rendered by JS -->
-          </p>
+          </div>
         </div>
 
         <!-- Sample Input / Output Grid for TV -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-slate-950/90 border border-slate-800/80 p-6 rounded-2xl">
             <span class="text-slate-400 font-bold uppercase tracking-wider text-xs md:text-sm block mb-2 flex items-center gap-2">
-              <i data-lucide="arrow-down-right" class="w-4 h-4 text-emerald-400"></i> Entrada de Ejemplo
+              <i data-lucide="arrow-down-right" class="w-4 h-4 text-emerald-400"></i> Entrada de Ejemplo (input)
             </span>
-            <pre id="ex-sample-input" class="text-xl md:text-2xl font-mono text-emerald-300 font-bold whitespace-pre-wrap"></pre>
+            <pre id="ex-sample-input" class="text-lg md:text-xl font-mono text-emerald-300 font-bold whitespace-pre-wrap"></pre>
           </div>
 
           <div class="bg-slate-950/90 border border-slate-800/80 p-6 rounded-2xl">
             <span class="text-slate-400 font-bold uppercase tracking-wider text-xs md:text-sm block mb-2 flex items-center gap-2">
-              <i data-lucide="terminal" class="w-4 h-4 text-brand-400"></i> Salida Esperada
+              <i data-lucide="terminal" class="w-4 h-4 text-brand-400"></i> Salida Esperada (print)
             </span>
-            <pre id="ex-sample-output" class="text-xl md:text-2xl font-mono text-brand-300 font-bold whitespace-pre-wrap"></pre>
+            <pre id="ex-sample-output" class="text-lg md:text-xl font-mono text-brand-300 font-bold whitespace-pre-wrap"></pre>
           </div>
         </div>
       </div>
@@ -227,7 +227,7 @@
             <i data-lucide="lightbulb" class="w-6 h-6"></i>
           </div>
           <div>
-            <h4 class="text-amber-400 font-black text-lg md:text-xl">Concepto Clave</h4>
+            <h4 class="text-amber-400 font-black text-lg md:text-xl">Objetivo Técnico y Aprendizaje Clave</h4>
             <p id="ex-explanation" class="text-slate-200 text-lg md:text-xl font-medium mt-1">
               Explicación breve del concepto
             </p>
@@ -256,7 +256,7 @@
         </div>
 
         <div id="terminal-container" class="hidden">
-          <div id="terminal-output" class="font-mono text-lg md:text-xl bg-codebg border border-slate-800 p-5 rounded-2xl min-h-[140px] max-h-[260px] overflow-y-auto text-emerald-400 whitespace-pre-wrap leading-relaxed">
+          <div id="terminal-output" class="font-mono text-lg md:text-xl bg-codebg border border-slate-800 p-5 rounded-2xl min-h-[140px] max-h-[280px] overflow-y-auto text-emerald-400 whitespace-pre-wrap leading-relaxed">
 Haz clic en "Ejecutar Código" para simular la consola interactiva...
           </div>
         </div>
@@ -279,7 +279,7 @@ Haz clic en "Ejecutar Código" para simular la consola interactiva...
 
       <!-- Center Indicator & Hotkey Hint -->
       <div class="text-center font-mono text-slate-400 text-sm md:text-base font-bold">
-        <span id="nav-counter" class="text-brand-400 text-xl font-extrabold">01 / 10</span>
+        <span id="nav-counter" class="text-brand-400 text-xl font-extrabold">01 / 05</span>
         <span class="hidden lg:inline text-slate-500 ml-3">| Teclas: ⬅️ ➡️ para cambiar, [ESPACIO] para alternar código</span>
       </div>
 
@@ -308,245 +308,192 @@ Haz clic en "Ejecutar Código" para simular la consola interactiva...
     const exercisesData = [
       {
         id: 1,
-        level: "Nivel 1: Fáciles",
+        level: "Nivel 1: Fundamentos",
         badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "El Descuento por Cantidad",
-        topic: "Lógica Básica y Matemáticas",
-        description: "Un puesto de empanadas vende cada una en $2. Si el cliente compra más de 5 empanadas, cada una cuesta $1.5.\n\nPide al usuario la cantidad de empanadas que desea comprar, calcula el precio total usando un if/else e imprime el costo final a pagar.",
-        sampleInput: "Cantidad: 6",
-        sampleOutput: "Compraste 6 empanadas a $1.50 c/u.\nEl costo final a pagar es: $9.00",
-        pythonCode: `# Ejercicio 1: El Descuento por Cantidad
+        title: "Ficha de Registro de Usuario",
+        topic: "input(), print(), variables y conversión de tipos",
+        description: "Diseña un programa que solicite al usuario sus datos para registrarlo en un sistema.<br><br><b>Requisitos:</b><br>• Pide al usuario su nombre, edad (como número entero) y si es estudiante (respondiendo 'si' o 'no').<br>• Imprime el tipo de dato nativo de la variable donde capturaste la edad antes y después de convertirla a entero con <code>int()</code>.<br>• Convierte la respuesta de si es estudiante a un valor booleano (True o False).<br>• Muestra un resumen de la información en pantalla utilizando la función <code>print()</code>.",
+        sampleInput: "Nombre: Carlos\nEdad: 24\n¿Es estudiante? (si/no): si",
+        sampleOutput: "Tipo inicial de edad: <class 'str'>\nTipo de edad tras convertir con int(): <class 'int'>\n\n=== RESUMEN DE REGISTRO ===\nNombre: Carlos\nEdad: 24 años\nEstudiante: True",
+        pythonCode: `# Ejercicio 1: Ficha de Registro de Usuario
 
-cantidad = int(input("¿Cuántas empanadas deseas comprar?: "))
+# 1. Capturar datos del usuario
+nombre = input("Ingresa tu nombre: ")
+edad_raw = input("Ingresa tu edad: ")
+estudiante_resp = input("¿Eres estudiante? (si/no): ")
 
-if cantidad > 5:
-    precio_unidad = 1.5
-else:
-    precio_unidad = 2.0
+# 2. Verificar e imprimir tipo de dato antes y después de la conversión
+print(f"Tipo de 'edad_raw' antes de convertir: {type(edad_raw)}")
 
-total = cantidad * precio_unidad
+edad = int(edad_raw)  # Conversión explícita a entero
+print(f"Tipo de 'edad' después de int(): {type(edad)}")
 
-print(f"Compraste {cantidad} empanadas a \${precio_unidad:.2f} c/u.")
-print(f"El costo final a pagar es: \${total:.2f}")`,
-        explanation: "Usa `input()` convertido a entero con `int()`. La condición `if cantidad > 5` asigna el precio unitario correspondiente."
+# 3. Convertir respuesta de estudiante a Booleano (True/False)
+es_estudiante = estudiante_resp.strip().lower() == "si"
+
+# 4. Mostrar resumen en pantalla
+print("\n=== RESUMEN DE REGISTRO ===")
+print(f"Nombre: {nombre}")
+print(f"Edad: {edad} años")
+print(f"Estudiante: {es_estudiante}")`,
+        explanation: "Demuestra la diferencia entre la captura inicial de cadenas con `input()` (que siempre retorna `str`) y la conversión explícita (`casting`) requerida con `int()` y comparaciones lógicas booleanas."
       },
       {
         id: 2,
-        level: "Nivel 1: Fáciles",
+        level: "Nivel 1: Fundamentos",
         badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "Calculadora de Velocidad Media",
-        topic: "Fórmula v = d / t",
-        description: "Pide la distancia en kilómetros (float) y el tiempo en horas (float).\n\nCalcula la velocidad (v = d / t). Si la velocidad supera los 80 km/h, imprime 'Vas muy rápido, reduce la velocidad'; de lo contrario, imprime 'Velocidad dentro del límite'.",
-        sampleInput: "Distancia: 180, Tiempo: 2",
-        sampleOutput: "Tu velocidad media es: 90.00 km/h\nVas muy rápido, reduce la velocidad",
-        pythonCode: `# Ejercicio 2: Calculadora de Velocidad Media
+        title: "Calculadora de Descuento y Presupuesto",
+        topic: "Operadores Aritméticos y Comparadores Lógicos",
+        description: "Crea un script que ayude a una tienda a calcular el costo final de un producto y verificar si un cliente tiene presupuesto suficiente.<br><br><b>Requisitos:</b><br>• Solicita el nombre del producto, su precio base (<code>float</code>), el porcentaje de descuento a aplicar (<code>int</code>) y el dinero disponible del cliente (<code>float</code>).<br>• Calcula el monto descontado y el precio final ($PrecioFinal = PrecioBase - (PrecioBase \\times Descuento / 100)$).<br>• Evalúa mediante operadores comparadores y lógicos si el cliente puede pagar el producto (<code>DineroDisponible >= PrecioFinal</code>).<br>• Muestra en pantalla el precio final a pagar y el resultado de la verificación (un valor True o False).",
+        sampleInput: "Producto: Zapatos\nPrecio Base: 80.0\nDescuento (%): 15\nDinero Disponible: 70.0",
+        sampleOutput: "Producto: Zapatos\nPrecio Base: $80.00\nMonto Descuento: $12.00\nPrecio Final: $68.00\n¿Presupuesto suficiente para comprar?: True",
+        pythonCode: `# Ejercicio 2: Calculadora de Descuento y Presupuesto
 
-distancia = float(input("Ingresa la distancia (km): "))
-tiempo = float(input("Ingresa el tiempo (horas): "))
+# 1. Entrada de datos con casting numérico
+producto = input("Nombre del producto: ")
+precio_base = float(input("Precio base ($): "))
+descuento_porcentaje = int(input("Porcentaje de descuento (%): "))
+dinero_disponible = float(input("Dinero disponible del cliente ($): "))
 
-if tiempo <= 0:
-    print("El tiempo debe ser mayor a 0")
-else:
-    velocidad = distancia / tiempo
-    print(f"Tu velocidad media es: {velocidad:.2f} km/h")
-    
-    if velocidad > 80:
-        print("Vas muy rápido, reduce la velocidad")
-    else:
-        print("Velocidad dentro del límite")`,
-        explanation: "Convierte las entradas a números decimales (`float`) para permitir cálculo preciso de división."
+# 2. Cálculos aritméticos
+monto_descuento = precio_base * (descuento_porcentaje / 100)
+precio_final = precio_base - monto_descuento
+
+# 3. Verificación lógica de presupuesto
+puede_comprar = dinero_disponible >= precio_final
+
+# 4. Resultados
+print("\n=== DETALLE DE COMPRA ===")
+print(f"Producto: {producto}")
+print(f"Precio Base: \${precio_base:.2f}")
+print(f"Monto Descuento ({descuento_porcentaje}%): \${monto_descuento:.2f}")
+print(f"Precio Final a Pagar: \${precio_final:.2f}")
+print(f"¿Presupuesto suficiente para comprar?: {puede_comprar}")`,
+        explanation: "Combina tipos numéricos decimales (`float`) con enteros (`int`), fórmulas aritméticas y operadores de comparación (`>=`) que devuelven resultados booleanos."
       },
       {
         id: 3,
-        level: "Nivel 1: Fáciles",
-        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-        title: "El Receptor de Temperatura",
-        topic: "Condicionales Múltiples (if / elif / else)",
-        description: "Pide la temperatura actual en °C (float).\n\n• Si es menor a 15: imprime 'Hace frío'\n• Si está entre 15 y 28 (inclusive): imprime 'El clima está templado'\n• Si es mayor a 28: imprime 'Hace mucho calor'",
-        sampleInput: "Temperatura: 22",
-        sampleOutput: "El clima está templado",
-        pythonCode: `# Ejercicio 3: El Receptor de Temperatura
+        level: "Nivel 2: Condicionales",
+        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+        title: "Clasificador de Edades y Acceso",
+        topic: "Estructuras if / elif / else y Operador AND",
+        description: "Desarrolla un sistema que determine la categoría de edad de una persona y verifique si puede ingresar a una atracción de parque de diversiones.<br><br><b>Requisitos:</b><br>• Pide al usuario su edad (<code>int</code>) y su estatura en centímetros (<code>float</code>).<br>• Utiliza <code>if / elif / else</code> para clasificarlo:<br>&nbsp;&nbsp;- Menor de 12 años: 'Niño'<br>&nbsp;&nbsp;- Entre 12 y 17 años: 'Adolescente'<br>&nbsp;&nbsp;- Entre 18 y 64 años: 'Adulto'<br>&nbsp;&nbsp;- 65 años o más: 'Adulto Mayor'<br>• Para subir a la atracción se requiere ser mayor de 12 años <b>and</b> medir más de 140 cm.<br>• Imprime la categoría asignada y un mensaje indicando si tiene permitido el acceso.",
+        sampleInput: "Edad: 15\nEstatura (cm): 150",
+        sampleOutput: "Categoría de Edad: Adolescente\nEvaluando Requisitos: Mayor de 12 años Y Estatura > 140 cm\nAcceso a la atracción: ¡ACCESO PERMITIDO!",
+        pythonCode: `# Ejercicio 3: Clasificador de Edades y Acceso
 
-temperatura = float(input("Ingresa la temperatura en °C: "))
+edad = int(input("Ingresa tu edad: "))
+estatura = float(input("Ingresa tu estatura en cm: "))
 
-if temperatura < 15:
-    print("Hace frío")
-elif temperatura <= 28:
-    print("El clima está templado")
+# 1. Clasificación por edad usando if / elif / else
+if edad < 12:
+    categoria = "Niño"
+elif edad <= 17:
+    categoria = "Adolescente"
+elif edad <= 64:
+    categoria = "Adulto"
 else:
-    print("Hace mucho calor")`,
-        explanation: "Las condiciones evaluadas secuencialmente evitan comparaciones compuestas innecesarias."
+    categoria = "Adulto Mayor"
+
+# 2. Evaluación lógica de acceso con operador AND
+puede_ingresar = edad > 12 and estatura > 140
+
+print("\n=== RESULTADO ===")
+print(f"Categoría de Edad: {categoria}")
+
+if puede_ingresar:
+    print("Acceso a la atracción: ¡ACCESO PERMITIDO!")
+else:
+    print("Acceso a la atracción: NO CUMPLE LOS REQUISITOS DE SEGURIDAD")`,
+        explanation: "Muestra cómo encadenar condicionales en orden lógico secuencial y cómo combinar múltiples condiciones simultáneas con el operador `and`."
       },
       {
         id: 4,
-        level: "Nivel 2: Intermedios",
+        level: "Nivel 2: Condicionales",
         badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "El Filtro de la Montaña Rusa",
-        topic: "Operador Lógico AND",
-        description: "Para subir a la atracción se exige medir al menos 1.40 metros Y ser mayor de 12 años.\n\nPide la estatura (float) y la edad (int). Usa 'and' para imprimir '¡Bienvenido a bordo!' o 'No cumples con los requisitos de seguridad'.",
-        sampleInput: "Estatura: 1.50, Edad: 14",
-        sampleOutput: "¡Bienvenido a bordo!",
-        pythonCode: `# Ejercicio 4: El Filtro de la Montaña Rusa
+        title: "Evaluador de Calificaciones y Asistencia",
+        topic: "Validación de Rangos y Expresiones Compuestas",
+        description: "Crea un programa que evalúe si un estudiante aprueba o reprueba un curso en base a su nota y su porcentaje de asistencia.<br><br><b>Requisitos:</b><br>• Solicita la nota final (0 a 100) y el porcentaje de asistencia (0 a 100).<br>• Verifica que las entradas sean válidas (nota entre 0 y 100 <b>and</b> asistencia entre 0 y 100). Si no son válidas, muestra un mensaje de error.<br>• Si los datos son válidos, determina el estado:<br>&nbsp;&nbsp;- <b>Aprobado con Excelencia:</b> Nota >= 90 y Asistencia >= 85%<br>&nbsp;&nbsp;- <b>Aprobado:</b> Nota >= 60 y Asistencia >= 75%<br>&nbsp;&nbsp;- <b>Reprobado por Asistencia:</b> Nota >= 60 pero Asistencia < 75%<br>&nbsp;&nbsp;- <b>Reprobado por Nota:</b> Nota < 60",
+        sampleInput: "Nota Final (0-100): 85\nAsistencia (0-100): 70",
+        sampleOutput: "Estado Académico: REPROBADO POR ASISTENCIA\nExplicación: Obtuviste nota aprobatoria (85), pero asistencia insuficiente (70%).",
+        pythonCode: `# Ejercicio 4: Evaluador de Calificaciones y Asistencia
 
-estatura = float(input("Ingresa tu estatura (metros): "))
-edad = int(input("Ingresa tu edad: "))
+nota = float(input("Ingresa la nota final (0-100): "))
+asistencia = float(input("Ingresa el porcentaje de asistencia (0-100): "))
 
-if estatura >= 1.40 and edad > 12:
-    print("¡Bienvenido a bordo!")
+# 1. Validación de rangos permitidos
+if not (0 <= nota <= 100 and 0 <= asistencia <= 100):
+    print("❌ Error: La nota y la asistencia deben estar comprendidas entre 0 y 100.")
 else:
-    print("No cumples con los requisitos de seguridad")`,
-        explanation: "El operador `and` requiere que ambas afirmaciones resulten verdaderas al mismo tiempo."
+    # 2. Evaluación de estados académicos
+    if nota >= 90 and asistencia >= 85:
+        estado = "APROBADO CON EXCELENCIA 🌟"
+    elif nota >= 60 and asistencia >= 75:
+        estado = "APROBADO ✅"
+    elif nota >= 60 and asistencia < 75:
+        estado = "REPROBADO POR ASISTENCIA ⚠️"
+    else:
+        estado = "REPROBADO POR NOTA ❌"
+
+    print("\n=== EVALUACIÓN ACADÉMICA ===")
+    print(f"Nota: {nota} / 100")
+    print(f"Asistencia: {asistencia}%")
+    print(f"Estado Final: {estado}")`,
+        explanation: "Enseña la técnica de 'Guardia de Entrada' (validar datos antes de procesar) y el uso de comparaciones compuestas y ordenadas por jerarquía."
       },
       {
         id: 5,
-        level: "Nivel 2: Intermedios",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "Selector de Días de la Semana",
-        topic: "Estructura match / case",
-        description: "Pide un número del 1 al 7.\n\nUtiliza match/case para imprimir el día de la semana correspondiente (1 = Lunes, ..., 7 = Domingo). Si se ingresa otro valor, usa case _: para indicar 'Número de día no válido'.",
-        sampleInput: "Día: 4",
-        sampleOutput: "Jueves",
-        pythonCode: `# Ejercicio 5: Selector de Días de la Semana (match/case)
-
-dia = int(input("Ingresa un número (1 a 7): "))
-
-match dia:
-    case 1: print("Lunes")
-    case 2: print("Martes")
-    case 3: print("Miércoles")
-    case 4: print("Jueves")
-    case 5: print("Viernes")
-    case 6: print("Sábado")
-    case 7: print("Domingo")
-    case _: print("Número de día no válido")`,
-        explanation: "La estructura `match/case` permite manejar selecciones de casos de manera directa e intuitiva."
-      },
-      {
-        id: 6,
-        level: "Nivel 2: Intermedios",
-        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-        title: "La Gran Cuenta Regresiva",
-        topic: "Bucle for con range() negativo",
-        description: "Pide un número entero positivo al usuario (ej. 10).\n\nUtiliza un bucle for con range() en paso negativo (-1) para hacer la cuenta regresiva hasta 0 e imprimir al final '¡Despegue!'.",
-        sampleInput: "Número: 5",
-        sampleOutput: "5\n4\n3\n2\n1\n0\n¡Despegue!",
-        pythonCode: `# Ejercicio 6: La Gran Cuenta Regresiva
-
-inicio = int(input("Ingresa el número inicial: "))
-
-for i in range(inicio, -1, -1):
-    print(i)
-
-print("¡Despegue!")`,
-        explanation: "El tercer argumento en `range(inicio, fin, paso)` define el decremento de -1 en cada ciclo."
-      },
-      {
-        id: 7,
-        level: "Nivel 3: Avanzados",
+        level: "Nivel 3: Match / Case",
         badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "El Contador de Números Positivos",
-        topic: "Bucle while y acumulador",
-        description: "Crea un bucle while que pida números enteros al usuario continuamente.\n\nEl bucle se detiene únicamente al ingresar un número negativo. Al salir, muestra cuántos números positivos en total ingresó el usuario.",
-        sampleInput: "5, 12, 0, -1",
-        sampleOutput: "Ingresaste 3 números positivos en total.",
-        pythonCode: `# Ejercicio 7: Contador de Positivos
+        title: "Menú Interactivo de Operaciones",
+        topic: "Estructura match / case y Comandos de Consola",
+        description: "Diseña un centro de atención interactivo por consola que procese la solicitud del usuario según una opción del menú y valide parámetros numéricos.<br><br><b>Opciones del Menú:</b><br>1 - Verificar si un número es par o impar.<br>2 - Calcular el área de un triángulo.<br>3 - Evaluar el estado de una orden.<br>4 - Salir.<br><br><b>Requisitos:</b><br>• Usa <code>match / case</code> para la opción seleccionada.<br>• En opción 1: Pide entero y usa el operador módulo (<code>%</code>).<br>• En opción 2: Pide base y altura (float) y calcula <code>Base * Altura / 2</code>.<br>• En opción 3: Pide un texto ('pendiente', 'enviado', 'entregado', 'cancelado') y evalúa con un <code>match / case</code> secundario.<br>• Opción por defecto (<code>case _</code>): Muestra 'Opción no válida'.",
+        sampleInput: "Opción: 3\nEstado de la orden: entregado",
+        sampleOutput: "--- Menú Principal ---\nOpción seleccionada: 3\nEstado recibido: entregado\n[Rastreo]: El paquete ha sido entregado en la dirección del cliente.",
+        pythonCode: `# Ejercicio 5: Menú Interactivo con match / case
 
-contador = 0
+print("=== MENÚ INTERACTIVO ===")
+print("1 - Verificar si un número es par o impar")
+print("2 - Calcular el área de un triángulo")
+print("3 - Evaluar el estado de una orden")
+print("4 - Salir")
 
-while True:
-    num = int(input("Ingresa un número (negativo para salir): "))
-    if num < 0:
-        break
-    contador += 1
+opcion = input("\nSelecciona una opción (1-4): ").strip()
 
-print(f"Ingresaste {contador} números positivos en total.")`,
-        explanation: "Un bucle `while True` junto con `break` permite detener la ejecución en cuanto se detecta la condición límite."
-      },
-      {
-        id: 8,
-        level: "Nivel 3: Avanzados",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "Detector de Múltiplos en un Rango",
-        topic: "Operador módulo %",
-        description: "Pide un número base (ejemplo: 3).\n\nRecorre del 1 al 30 con un bucle for. Verifica con el operador módulo % si el número del bucle es múltiplo del número base. Si lo es, imprímelo.",
-        sampleInput: "Base: 7",
-        sampleOutput: "-> 7 es múltiplo de 7\n-> 14 es múltiplo de 7\n-> 21 es múltiplo de 7\n-> 28 es múltiplo de 7",
-        pythonCode: `# Ejercicio 8: Detector de Múltiplos
+match opcion:
+    case "1":
+        numero = int(input("Ingresa un número entero: "))
+        if numero % 2 == 0:
+            print(f"El número {numero} es PAR.")
+        else:
+            print(f"El número {numero} es IMPAR.")
 
-base = int(input("Ingresa el número base: "))
+    case "2":
+        base = float(input("Ingresa la base del triángulo: "))
+        altura = float(input("Ingresa la altura del triángulo: "))
+        area = (base * altura) / 2
+        print(f"El área del triángulo es: {area:.2f}")
 
-print(f"Múltiplos de {base} del 1 al 30:")
-for i in range(1, 31):
-    if i % base == 0:
-        print(f"-> {i} es múltiplo de {base}")`,
-        explanation: "El operador `%` obtiene el residuo de una división. Un residuo de `0` indica divisibilidad exacta."
-      },
-      {
-        id: 9,
-        level: "Nivel 3: Avanzados",
-        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-        title: "Bucle de Reintentos Limitados",
-        topic: "Simulador de Cajero (PIN)",
-        description: "PIN_SECRETO = 4321. Otorga al usuario máximo 3 intentos mediante un bucle while.\n\nSi acierta: 'Acceso concedido'. Si agota los 3 intentos: 'Cuenta bloqueada por demasiados intentos fallidos'.",
-        sampleInput: "Intentos: 1111, 4321",
-        sampleOutput: "¡Acceso concedido!",
-        pythonCode: `# Ejercicio 9: Reintentos de PIN
+    case "3":
+        estado = input("Estado de la orden (pendiente/enviado/entregado/cancelado): ").lower().strip()
+        match estado:
+            case "pendiente":
+                print("⏳ Tu pedido está en preparación en el almacén.")
+            case "enviado":
+                print("🚚 Tu pedido está en camino con la empresa de envíos.")
+            case "entregado":
+                print("📦 El paquete ha sido entregado en la dirección del cliente.")
+            case "cancelado":
+                print("🚫 La orden ha sido cancelada.")
+            case _:
+                print("❓ Estado desconocido.")
 
-PIN_SECRETO = 4321
-intentos = 3
-acceso = False
+    case "4":
+        print("👋 ¡Gracias por usar el sistema! Hasta luego.")
 
-while intentos > 0 and not acceso:
-    ingresado = int(input(f"PIN ({intentos} intentos restantes): "))
-    if ingresado == PIN_SECRETO:
-        acceso = True
-    else:
-        intentos -= 1
-
-if acceso:
-    print("¡Acceso concedido!")
-else:
-    print("Cuenta bloqueada por demasiados intentos fallidos.")`,
-        explanation: "Usa una bandera booleana (`acceso`) combinada con un contador regresivo de intentos."
-      },
-      {
-        id: 10,
-        level: "Nivel 4: Desafío Integrador",
-        badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-        title: "Simulador de Batalla RPG",
-        topic: "Juego de Turnos por Consola",
-        description: "Jugador: 100 HP | Monstruo: 80 HP. Bucle while mientras ambos tengan HP > 0.\n\nEn cada turno el usuario elige:\n1. Atacar (-18 HP al monstruo)\n2. Curarse (+10 HP al jugador)\n\nSi el monstruo sobrevive, contraataca haciendo 12 HP de daño. Al finalizar declara el ganador.",
-        sampleInput: "Acción: 1 (Atacar)",
-        sampleOutput: "¡VICTORIA! Has derrotado al monstruo.",
-        pythonCode: `# Ejercicio 10: Batalla por Turnos RPG
-
-vida_jugador = 100
-vida_monstruo = 80
-
-while vida_jugador > 0 and vida_monstruo > 0:
-    print(f"\\nJugador: {vida_jugador} HP | Monstruo: {vida_monstruo} HP")
-    opcion = input("Acción (1: Atacar / 2: Curar): ").strip()
-    
-    match opcion:
-        case "1":
-            vida_monstruo -= 18
-            print("🗡️ Le hiciste 18 de daño al monstruo.")
-        case "2":
-            vida_jugador += 10
-            print("✨ Te curaste 10 HP.")
-        case _:
-            print("Opción inválida. Perdiste el turno.")
-            
-    if vida_monstruo > 0:
-        vida_jugador -= 12
-        print("👾 El monstruo te ataca haciéndote 12 de daño.")
-
-print("\\n--- FIN DE LA BATALLA ---")
-if vida_jugador > 0:
-    print("🎉 ¡VICTORIA! Has derrotado al monstruo.")
-else:
-    print("💀 DERROTA... El monstruo te ha vencido.")`,
-        explanation: "Combina variables de estado, `while`, control de turnos interactivo mediante `match/case` y condicional final."
+    case _:
+        print("❌ Opción no válida. Por favor elige entre 1 y 4.")`,
+        explanation: "Muestra la potencia de `match / case` (Pattern Matching) introducido en Python 3.10 para reemplazar extensas cadenas de `if/elif` de forma limpia."
       }
     ];
 
@@ -555,7 +502,6 @@ else:
     let pyodideInstance = null;
     let isTerminalOpen = false;
 
-    // Initialize UI on load
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       renderQuickNumberBar();
@@ -572,12 +518,12 @@ else:
             onclick="loadExercise(${ex.id})" 
             class="w-8 h-8 md:w-10 md:h-10 rounded-xl font-black text-xs md:text-sm font-mono transition-all flex items-center justify-center ${
               isActive 
-                ? 'bg-brand-500 text-slate-950 shadow-md shadow-brand-500/30' 
+                ? 'bg-brand-500 text-slate-950 shadow-md shadow-brand-500/30 font-bold scale-105' 
                 : 'text-slate-400 hover:text-white hover:bg-slate-800'
             }"
             title="Ejercicio ${ex.id}"
           >
-            ${ex.id < 10 ? '0' + ex.id : ex.id}
+            0${ex.id}
           </button>
         `;
       }).join('');
@@ -598,7 +544,7 @@ else:
       document.getElementById('ex-title').textContent = `${ex.id}. ${ex.title}`;
 
       // Update View 1 (Enunciado)
-      document.getElementById('ex-description').innerHTML = escapeAndFormatNewlines(ex.description);
+      document.getElementById('ex-description').innerHTML = ex.description;
       document.getElementById('ex-sample-input').textContent = ex.sampleInput;
       document.getElementById('ex-sample-output').textContent = ex.sampleOutput;
 
@@ -609,7 +555,7 @@ else:
       document.getElementById('ex-explanation').textContent = ex.explanation;
 
       // Update Bottom Nav
-      document.getElementById('nav-counter').textContent = `${ex.id < 10 ? '0' + ex.id : ex.id} / ${exercisesData.length}`;
+      document.getElementById('nav-counter').textContent = `0${ex.id} / 0${exercisesData.length}`;
       document.getElementById('btn-prev').disabled = ex.id === 1;
       document.getElementById('btn-next').disabled = ex.id === exercisesData.length;
 
@@ -675,7 +621,7 @@ else:
       }
 
       const term = document.getElementById('terminal-output');
-      term.innerHTML = "⏳ Cargando entorno de Python en el navegador...\n";
+      term.innerHTML = "⏳ Cargando entorno de Python (Pyodide WebAssembly)...\n";
 
       if (!pyodideInstance) {
         try {
@@ -683,12 +629,12 @@ else:
             indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/"
           });
         } catch (err) {
-          term.innerHTML = "❌ Error al cargar el motor de Python.\n";
+          term.innerHTML = "❌ Error al inicializar el motor de Python en el navegador.\n";
           return;
         }
       }
 
-      term.innerHTML = "▶️ Ejecutando script...\n----------------------------------------\n";
+      term.innerHTML = "▶️ Ejecutando script de resolución...\n----------------------------------------\n";
 
       try {
         let outputBuffer = "";
@@ -701,17 +647,17 @@ else:
 
         pyodideInstance.setStdin({
           stdin: () => {
-            const result = window.prompt("Entrada requerida por input():");
-            term.innerHTML += `> Ingresado: ${result || ''}\n`;
-            return (result || "") + "\n";
+            const result = window.prompt("Python input() solicitado por la consola:");
+            term.innerHTML += `> Ingresado: ${result !== null ? result : ''}\n`;
+            return (result !== null ? result : "") + "\n";
           }
         });
 
         await pyodideInstance.runPythonAsync(ex.pythonCode);
 
-        term.innerHTML += outputBuffer + "\n----------------------------------------\n✅ Ejecución finalizada correctamente.";
+        term.innerHTML += outputBuffer + "\n----------------------------------------\n✅ Ejecución finalizada con éxito.";
       } catch (error) {
-        term.innerHTML += `\n❌ Error de Ejecución:\n${error.message}`;
+        term.innerHTML += `\n❌ Error en la ejecución de Python:\n${error.message}`;
       }
     }
 
@@ -732,14 +678,19 @@ else:
 
     function clearTerminal() {
       const term = document.getElementById('terminal-output');
-      if (term) term.innerHTML = "Consola limpia.";
+      if (term) term.innerHTML = "Consola limpia. Presiona 'Ejecutar Código' para probar.";
     }
 
     function copyCurrentCode() {
       const ex = exercisesData.find(e => e.id === currentExerciseId);
       if (ex) {
-        navigator.clipboard.writeText(ex.pythonCode);
-        showToast("Código copiado al portapapeles");
+        const textarea = document.createElement('textarea');
+        textarea.value = ex.pythonCode;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast("Código de resolución copiado al portapapeles");
       }
     }
 
@@ -765,10 +716,6 @@ else:
         toast.classList.remove('translate-y-0', 'opacity-100');
         toast.classList.add('translate-y-20', 'opacity-0');
       }, 2500);
-    }
-
-    function escapeAndFormatNewlines(str) {
-      return str.replace(/\n/g, '<br>');
     }
   </script>
 </body>
