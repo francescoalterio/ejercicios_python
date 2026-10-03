@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Números para Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code, textarea { font-family: 'Fira Code', monospace; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between p-4 sm:p-8">
+
+    <main class="max-w-4xl mx-auto w-full my-auto space-y-6">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+                    <span class="text-emerald-400">🐍</span> Lista para Python
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">Formato de lista con corchetes lista para copiar y pegar en tu código.</p>
+            </div>
+            
+            <button id="copy-btn" onclick="copyToClipboard()" class="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-slate-950 font-semibold px-5 py-2.5 rounded-xl transition duration-200 shadow-lg shadow-emerald-500/10 cursor-pointer">
+                <svg id="copy-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                </svg>
+                <span id="btn-text">Copiar Lista</span>
+            </button>
+        </div>
+
+        <!-- Code Display Card -->
+        <div class="relative bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl">
+            <div class="flex justify-between items-center text-xs text-slate-400 pb-3 mb-3 border-b border-slate-800/60">
+                <span class="font-mono text-emerald-400">numeros = [...]</span>
+                <span id="char-count">200 elementos</span>
+            </div>
+            
+            <textarea id="python-list" readonly rows="8" class="w-full bg-slate-950/80 border border-slate-800 text-slate-200 text-sm p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y leading-relaxed font-mono select-all">
+[15, 3, 18, 7, 2, 12, 15, 9, 4, 18, 1, 14, 8, 20, 3, 11, 5, 17, 2, 9, 10, 15, 6, 12, 1, 19, 8, 4, 16, 7, 13, 20, 3, 10, 5, 18, 2, 14, 9, 11, 15, 1, 6, 17, 8, 12, 4, 19, 7, 13, 10, 20, 2, 16, 5, 9, 14, 3, 18, 11, 8, 1, 15, 6, 12, 17, 4, 19, 7, 13, 10, 20, 2, 5, 16, 9, 14, 3, 18, 11, 8, 1, 15, 6, 12, 17, 4, 19, 7, 13, 10, 20, 2, 5, 16, 9, 14, 3, 18, 11, 8, 1, 15, 6, 12, 17, 4, 19, 7, 13, 10, 20, 2, 5, 16, 9, 14, 3, 18, 11, 8, 1, 15, 6, 12, 17, 4, 19, 7, 13, 10, 20, 2, 5, 16, 9, 14, 3, 18, 11, 8, 1, 15, 6, 12, 17, 4, 19, 7, 13, 10, 20, 2, 5, 16, 9, 14, 3, 18, 11, 8, 1, 15, 6, 12, 17, 4, 19, 7, 13]</textarea>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-xs text-slate-400 mb-1">Total Elementos</span>
+                <span class="text-xl font-bold text-slate-100">200</span>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-xs text-slate-400 mb-1">Valores Únicos</span>
+                <span class="text-xl font-bold text-emerald-400">20</span>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-xs text-slate-400 mb-1">Mínimo</span>
+                <span class="text-xl font-bold text-slate-100">1</span>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-xs text-slate-400 mb-1">Máximo</span>
+                <span class="text-xl font-bold text-slate-100">20</span>
+            </div>
+        </div>
+
+        <!-- Toast notification -->
+        <div id="toast" class="fixed bottom-6 right-6 bg-emerald-500 text-slate-950 font-medium px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            ¡Copiado al portapapeles con éxito!
+        </div>
+
+    </main>
+
+    <script>
+        function copyToClipboard() {
+            const copyText = document.getElementById("python-list");
+            
+            // Select text inside textarea
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                // Execute copy command
+                document.execCommand('copy');
+                
+                // UI Feedback
+                const btn = document.getElementById('copy-btn');
+                const btnText = document.getElementById('btn-text');
+                const toast = document.getElementById('toast');
+                
+                // Update button style temporarily
+                btn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+                btn.classList.add('bg-slate-100', 'text-slate-950');
+                btnText.textContent = "¡Copiado!";
+                
+                // Show toast notification
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.classList.remove('bg-slate-100', 'text-slate-950');
+                    btn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+                    btnText.textContent = "Copiar Lista";
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 2000);
+
+            } catch (err) {
+                console.error('Error al copiar: ', err);
+            }
+        }
+    </script>
+</body>
+</html>
